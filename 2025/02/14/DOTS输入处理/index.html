@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>对Hexo的使用的简单总结和学习记录 | 楽谱</title>
+    <title>DOTS输入处理 | 楽谱</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -156,51 +156,29 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>对Hexo的使用的简单总结和学习记录</h1>
+        <h1>DOTS输入处理</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2024/11/25
+            2025/2/14
         </span>
         
-        <span class="category">
-            <a href="/categories/%E7%BC%96%E7%A8%8B/">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                编程
-            </a>
-        </span>
-        
-        
-        <span class="tags">
-            <span class="icon">
-                <i class="fa-solid fa-tags fa-fw"></i>
-            </span>
-            
-            
-            <span class="tag">
-                
-                <a href="/tags/%E7%BD%91%E7%AB%99%E5%BC%80%E5%8F%91/" style="color: #ffa2c4">
-                    网站开发
-                </a>
-            </span>
-            
-        </span>
         
     </div>
     
     <div class="content" v-pre>
-        <h2 id="使用Hexo"><a href="#使用Hexo" class="headerlink" title="使用Hexo"></a>使用Hexo</h2><p>快捷命令: </p>
-<ol>
-<li>hexo g 生成网站的静态文件</li>
-<li>hexo s 启动服务器</li>
-<li>hexo d 部署网站内容，同步到github（或其他设置的存储文件网站）</li>
-<li>hexo new  “文章名字”（创建新的文章）</li>
+        <ol>
+<li><p>InputEvent，一个标志用于处理一个输入是否被响应过了，同时追踪该输入事件响应过几次（bool+int）</p>
+</li>
+<li><p>NetWorkTime.IsFirstFullPredictingTick，检测是不是一个服务器端的时间步长的开始，如果是就执行，确保了按照服务器端的时间步长执行代码</p>
+</li>
+<li><p>带Ghost的数据会被同步到所有客户端。例如不带Ghost的IInputComponentData，只是从单一客户端发完服务端，带Ghost则会同步到所有客户端</p>
+</li>
 </ol>
+<p>主要区别：<br>1.数据流向<br>不带Ghost：输入数据只从客户端发送到服务端<br>带Ghost：输入数据会被同步到所有客户端，其他客户端也能看到这个输入状态<br>2．使用场景<br>不带Ghost：适用于只需要服务端处理输入的情况（比如单纯的移动、跳跃）<br>·带Ghost：适用于其他玩家需要看到输入状态的情况（比如动画状态、武器准星等）<br>3．网络带宽<br>不带Ghost：带宽占用较少，因为数据只传输一次<br>·带Ghost：带宽占用较多，因为要同步给所有客户端</p>
 
     </div>
     

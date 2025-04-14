@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>DOTS架构研究 | 楽谱</title>
+    <title>DOTS初始化设置 | 楽谱</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -156,7 +156,7 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>DOTS架构研究</h1>
+        <h1>DOTS初始化设置</h1>
     </div>
     <div class="info">
         <span class="date">
@@ -170,7 +170,11 @@
     </div>
     
     <div class="content" v-pre>
-        
+        <ol>
+<li>Entities包体，Entities Grapic包，Unity Physics包（注意导入Sample里面的额外包？），Math，NetNode For Entities</li>
+<li>系统设置：更快的启动（注意静态变量&#x2F;构造函数等将不会再次调用），正面切片，Entities里面的设置需要关注</li>
+</ol>
+
     </div>
     
     
