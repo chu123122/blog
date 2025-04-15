@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>DOTS输入处理 | chu&#39;s Blog</title>
+    <title>客户端和服务端通信知识点记录 | chu&#39;s Blog</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -156,14 +156,14 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>DOTS输入处理</h1>
+        <h1>客户端和服务端通信知识点记录</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2025/2/14
+            2025/2/19
         </span>
         
         <span class="category">
@@ -184,7 +184,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/DOTS/" style="color: #03a9f4">
+                <a href="/tags/DOTS/" style="color: #ff7d73">
                     DOTS
                 </a>
             </span>
@@ -194,15 +194,14 @@
     </div>
     
     <div class="content" v-pre>
-        <ol>
-<li><p>InputEvent，一个标志用于处理一个输入是否被响应过了，同时追踪该输入事件响应过几次（bool+int）</p>
-</li>
-<li><p>NetWorkTime.IsFirstFullPredictingTick，检测是不是一个服务器端的时间步长的开始，如果是就执行，确保了按照服务器端的时间步长执行代码</p>
-</li>
-<li><p>带Ghost的数据会被同步到所有客户端。例如不带Ghost的IInputComponentData，只是从单一客户端发完服务端，带Ghost则会同步到所有客户端</p>
-</li>
+        <h4 id="1-Rpc的发送和接收"><a href="#1-Rpc的发送和接收" class="headerlink" title="1. Rpc的发送和接收"></a>1. <em><strong><strong>Rpc的发送和接收</strong></strong></em></h4><p>通过添加组件SendRpcCommandRequest来发送Rpc请求，<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/5.png"><br>通过添加组件ReceiveRpcCommandRequest来接受到Rpc请求，rpc接受到时需要立即销毁，unity限制了rpc的存在时间（超过一定时间会弹报错）<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/6.png"><br>注：</p>
+<ol>
+<li>ReceiveRpcCommandRequest和SendRpcCommandRequest内存在属性 Entity SourceConnection。不设置的情况下，从客户端发送rpc默认发送往服务端，从服务端发送默认发送往所有客户端</li>
+<li>Rpc的entity存储的数据大小是有限制的，无法存储较多的数据</li>
 </ol>
-<p><img src="/../images/DOTS%E6%80%BB%E7%BB%93/14.png"></p>
+<h4 id="2-组件的网络传输"><a href="#2-组件的网络传输" class="headerlink" title="2. 组件的网络传输"></a>2. <strong><strong><strong>组件的网络传输</strong></strong></strong></h4><p>通过往组件上添加GhostComponent，对应属性上添加GhostField来实现（注：只添加一个是不行的），由unity自动管理客户端和服务端的同步。<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/7.png"></p>
+<h4 id="3-RPC和GhostField的区别"><a href="#3-RPC和GhostField的区别" class="headerlink" title="3. RPC和GhostField的区别"></a>3. <strong><strong><strong>RPC和GhostField的区别</strong></strong></strong></h4><p>RPC保证了一定传达，是可信赖的。GhostField则是可能丢失的。同时后加入的玩家无法获取到向前发送到的RPC，但是之前可以从服务器获取到物体当前的GhostField。<br>eg.一个宝箱，玩家a打开后如果服务器端用RPC来改变，则后来的玩家无法获取到向前的RPC，宝箱依旧关闭；如果用GhostField来存储，则是打开的<br>RPC多用于一次性事件，Ghost多用于持久化的属性（但也可用于一次性事件？）</p>
+<h4 id="4-如何处理客户端和服务端帧率不同导致的行为问题"><a href="#4-如何处理客户端和服务端帧率不同导致的行为问题" class="headerlink" title="4. 如何处理客户端和服务端帧率不同导致的行为问题"></a>4. <em><strong><strong>如何处理客户端和服务端帧率不同导致的行为问题</strong></strong></em></h4><p>在Update里面添加<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/8.png"></p>
 
     </div>
     

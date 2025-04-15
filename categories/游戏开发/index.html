@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>DOTS输入处理 | chu&#39;s Blog</title>
+    <title>Categories: 游戏开发 | chu&#39;s Blog</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -37,10 +37,6 @@
 
 
 <script src="/js/lib/preview.js"></script>
-
-
-
-
 
 
 
@@ -154,20 +150,25 @@
 </transition>
 
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-            <div class="article">
-    <div>
-        <h1>DOTS输入处理</h1>
-    </div>
-    <div class="info">
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2025/2/14
+            <div id="archives">
+    
+    <div class="categories-tags">
+        
+        
+        
+        <span>
+            <a href="/categories/%E7%BC%96%E7%A8%8B/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                编程
+            </a>
         </span>
         
-        <span class="category">
-            <a href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">
+        
+        
+        <span>
+            <a href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
@@ -176,45 +177,184 @@
         </span>
         
         
-        <span class="tags">
-            <span class="icon">
-                <i class="fa-solid fa-tags fa-fw"></i>
-            </span>
-            
-            
-            <span class="tag">
-                
-                <a href="/tags/DOTS/" style="color: #03a9f4">
-                    DOTS
-                </a>
-            </span>
-            
-        </span>
+        
         
     </div>
     
-    <div class="content" v-pre>
-        <ol>
-<li><p>InputEvent，一个标志用于处理一个输入是否被响应过了，同时追踪该输入事件响应过几次（bool+int）</p>
-</li>
-<li><p>NetWorkTime.IsFirstFullPredictingTick，检测是不是一个服务器端的时间步长的开始，如果是就执行，确保了按照服务器端的时间步长执行代码</p>
-</li>
-<li><p>带Ghost的数据会被同步到所有客户端。例如不带Ghost的IInputComponentData，只是从单一客户端发完服务端，带Ghost则会同步到所有客户端</p>
-</li>
-</ol>
-<p><img src="/../images/DOTS%E6%80%BB%E7%BB%93/14.png"></p>
-
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2025/2/19</div>
+            <a href="/2025/02/19/%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%92%8C%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%80%9A%E4%BF%A1%E7%9F%A5%E8%AF%86%E7%82%B9%E8%AE%B0%E5%BD%95/">
+                <h3>客户端和服务端通信知识点记录</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        游戏开发
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/DOTS/" style="color: #00a596">
+                            DOTS
+                        </a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
     </div>
     
-    
-    
-    
-    <div id="comment">
-        <div id="giscus-container" class="giscus"></div>
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2025/2/18</div>
+            <a href="/2025/02/18/DOTS%E6%9E%B6%E6%9E%84%E4%B8%8B%E7%9A%84%E7%89%A9%E7%90%86%E7%A2%B0%E6%92%9E/">
+                <h3>DOTS架构下的物理碰撞</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        游戏开发
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/DOTS/" style="color: #00bcd4">
+                            DOTS
+                        </a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
     </div>
     
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2025/2/14</div>
+            <a href="/2025/02/14/DOTS%E8%BE%93%E5%85%A5%E5%A4%84%E7%90%86/">
+                <h3>DOTS输入处理</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        游戏开发
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/DOTS/" style="color: #ffa2c4">
+                            DOTS
+                        </a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
     
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2025/1/27</div>
+            <a href="/2025/01/27/%E6%B8%B8%E6%88%8F%E5%88%B6%E4%BD%9C%E7%BB%8F%E9%AA%8C/">
+                <h3>游戏制作经验记录</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        游戏开发
+                    </a>
+                </span>
+                
+                
+            </div>
+        </div>
+    </div>
     
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2024/1/22</div>
+            <a href="/2024/01/22/DOTS%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8UI/">
+                <h3>DOTS中如何使用UI</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        游戏开发
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/DOTS/" style="color: #ffa2c4">
+                            DOTS
+                        </a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
     
 </div>
 
@@ -246,29 +386,6 @@
         
     </div>
     <script src="/js/main.js"></script>
-    
-    
-<script
-    src=""
-    data-repo="chu123122/blog"
-    data-repo-id=""
-    data-category="Announcements"
-    data-category-id=""
-    data-mapping="pathname"
-    data-strict="0"
-    data-reactions-enabled=""
-    data-emit-metadata=""
-    data-input-position=""
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin
-    async
-></script>
-
-
-
-
-
     
 </body>
 </html>

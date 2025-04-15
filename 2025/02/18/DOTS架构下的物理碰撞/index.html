@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>DOTS输入处理 | chu&#39;s Blog</title>
+    <title>DOTS架构下的物理碰撞 | chu&#39;s Blog</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -156,14 +156,14 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>DOTS输入处理</h1>
+        <h1>DOTS架构下的物理碰撞</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2025/2/14
+            2025/2/18
         </span>
         
         <span class="category">
@@ -184,7 +184,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/DOTS/" style="color: #03a9f4">
+                <a href="/tags/DOTS/" style="color: #ff7d73">
                     DOTS
                 </a>
             </span>
@@ -194,15 +194,10 @@
     </div>
     
     <div class="content" v-pre>
-        <ol>
-<li><p>InputEvent，一个标志用于处理一个输入是否被响应过了，同时追踪该输入事件响应过几次（bool+int）</p>
-</li>
-<li><p>NetWorkTime.IsFirstFullPredictingTick，检测是不是一个服务器端的时间步长的开始，如果是就执行，确保了按照服务器端的时间步长执行代码</p>
-</li>
-<li><p>带Ghost的数据会被同步到所有客户端。例如不带Ghost的IInputComponentData，只是从单一客户端发完服务端，带Ghost则会同步到所有客户端</p>
-</li>
+        <p>由于在DOTS框架下，unity原本的Rightbody和Collder物理系统无法使用，需要下载Untiy Physics包<br>（地址：com.unity.physics）<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/12.png"><br>另外，需要下载Unity Physics包下另一部分<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/13.png"></p>
+<h4 id="如何使用Physics系统"><a href="#如何使用Physics系统" class="headerlink" title="如何使用Physics系统"></a><em><strong><strong>如何使用Physics系统</strong></strong></em></h4><ol>
+<li>实现ITriggerEventsJob<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/9.png"><br>triggerEvent里面可以获取到当前发生碰撞的两个事物，通过条件手动判断两个事物分别是什么<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/10.png"><br>（注意Job里面需要使用ComponentLookup&#x2F;BufferLookup之类来获取到检查对应组件是否拥有）在System里面创建时手动传输<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/11.png"><br>Collstion和Physics同理</li>
 </ol>
-<p><img src="/../images/DOTS%E6%80%BB%E7%BB%93/14.png"></p>
 
     </div>
     

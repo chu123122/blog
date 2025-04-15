@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>DOTS输入处理 | chu&#39;s Blog</title>
+    <title>CS61A学习总结 | chu&#39;s Blog</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -156,22 +156,22 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>DOTS输入处理</h1>
+        <h1>CS61A学习总结</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2025/2/14
+            2025/4/16
         </span>
         
         <span class="category">
-            <a href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">
+            <a href="/categories/%E7%BC%96%E7%A8%8B/">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
-                游戏开发
+                编程
             </a>
         </span>
         
@@ -184,8 +184,8 @@
             
             <span class="tag">
                 
-                <a href="/tags/DOTS/" style="color: #03a9f4">
-                    DOTS
+                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0/" style="color: #ff7d73">
+                    计算机学习
                 </a>
             </span>
             
@@ -194,15 +194,26 @@
     </div>
     
     <div class="content" v-pre>
-        <ol>
-<li><p>InputEvent，一个标志用于处理一个输入是否被响应过了，同时追踪该输入事件响应过几次（bool+int）</p>
+        <h4 id="1-数据抽象"><a href="#1-数据抽象" class="headerlink" title="1. 数据抽象"></a>1. <em><strong><strong>数据抽象</strong></strong></em></h4><p>使用函数构建抽象的·过程即将不同的作用代码抽象为一个个函数名称，将关注点从里面具体的代码实现转移到函数的作用，只需理解一个函数的需要的参数，输出的结果类型，发挥的作用即可。</p>
+<p>使用数据构建抽象的过程大致可分为三个部分：</p>
+<ol>
+<li>操作抽象数据</li>
+<li>定义具体表示</li>
+<li>一组根据具体表示实现抽象数据的函数将两部分相连<br>解释：<br> （1）操作抽象数据即构建的数据结构中操作的函数<br> eg：List里的Add（），Detele（）<br> （2）定义具体表示即所抽象出来的数据的具体，用户是如何定义这个数据结构的<br> eg：Point定义为有x，y坐标的一个点<br> （3）相连部分即如何根据实际数据构建起抽象数据的函数，也就是构造函数和选择函数<br><img src="/../images/CS61A%E6%80%BB%E7%BB%93/1.png"></li>
+</ol>
+<h4 id="2-递归"><a href="#2-递归" class="headerlink" title="2. 递归"></a>2. <em><strong><strong>递归</strong></strong></em></h4><p>递归的构建集中于三个点：</p>
+<ol>
+<li><p><em><strong>Base case</strong></em><br> 递归退出的条件，亦或者是递归可以进入的最小值 ,作为退出递归的条件</p>
 </li>
-<li><p>NetWorkTime.IsFirstFullPredictingTick，检测是不是一个服务器端的时间步长的开始，如果是就执行，确保了按照服务器端的时间步长执行代码</p>
+<li><p><em><strong>Recursive call on a smaller problem</strong></em><br> 递归逐渐减小的问题，关注递归如何通过逐渐减小来把一个问题逐渐变简单</p>
 </li>
-<li><p>带Ghost的数据会被同步到所有客户端。例如不带Ghost的IInputComponentData，只是从单一客户端发完服务端，带Ghost则会同步到所有客户端</p>
+<li><p><em><strong>Solve the larger problem</strong></em><br> 如何将一个个逐渐减小难度的问题集合在一起，从而形成一个大问题的答案</p>
 </li>
 </ol>
-<p><img src="/../images/DOTS%E6%80%BB%E7%BB%93/14.png"></p>
+<p>注1：Base case的情况（退出递归）的增加可以有效减少递归的深度<br>注2：尾递归指只在一次步骤中进行所有递归操作，部分编译器可以对尾递归进行优化，从而降低深度、<br><img src="/../images/CS61A%E6%80%BB%E7%BB%93/2.png"></p>
+<h4 id="2-尾递归"><a href="#2-尾递归" class="headerlink" title="2. 尾递归"></a>2. <em><strong><strong>尾递归</strong></strong></em></h4><p>尾递归的原理是通过一个内置helper Function的函数，将当前调用的函数转化为一个helper Function，调用返回的是一个无参函数，从而结束了当前帧。而在帮助函数里，它返回它外面的函数，而这个外面的函数再次返回的仍然是一个helper Function，从而继续结束当前帧，如此循环（也就是将这个函数包装起来了，thunk）<br>   再通过另一个拆包的函数来实现调用，一个简单循环如果拆开的函数仍然是一个thunk则继续拆包，知道拆出来的是一个value（Trampolining）</p>
+<p><em><strong>一个包装函数和一个拆包函数相互作用，从而在尾递归调用中减少了大量中间帧的保持。</strong></em></p>
+<p>尾递归的定义：在调用递归函数其本身前不做其他任何事情<br><img src="/../images/CS61A%E6%80%BB%E7%BB%93/3.png"></p>
 
     </div>
     

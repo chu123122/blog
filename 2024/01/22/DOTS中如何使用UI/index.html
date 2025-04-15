@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>DOTS初始化设置 | chu&#39;s Blog</title>
+    <title>DOTS中如何使用UI | chu&#39;s Blog</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -156,23 +156,47 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>DOTS初始化设置</h1>
+        <h1>DOTS中如何使用UI</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2024/11/27
+            2024/1/22
         </span>
         
+        <span class="category">
+            <a href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                游戏开发
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/DOTS/" style="color: #03a9f4">
+                    DOTS
+                </a>
+            </span>
+            
+        </span>
         
     </div>
     
     <div class="content" v-pre>
         <ol>
-<li>Entities包体，Entities Grapic包，Unity Physics包（注意导入Sample里面的额外包？），Math，NetNode For Entities</li>
-<li>系统设置：更快的启动（注意静态变量&#x2F;构造函数等将不会再次调用），正面切片，Entities里面的设置需要关注</li>
+<li><em><strong><strong>Hybird式</strong></strong></em>：<br>建立在Mono的基础上，在一个Entity单位创建后添加待处理Tag，在UI初始化系统中进行各种UI的创建（通过Action&#x2F;Funk的事件机制绑定各类UI的创建）<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/1.png"><br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/2.png"></li>
+<li><em><strong><strong>纯ECS式</strong></strong></em>：<br>在System里面直接创建GameObject（UIPrefabs里存储了预制体）<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/3.png"><br>同时添加上特定组件存储引用，方便后面能够在System里面大批量的查询到<br>(ICleanupComponentData：由unity自动管理生命周期）<br><img src="/../images/DOTS%E6%80%BB%E7%BB%93/4.png"></li>
 </ol>
 
     </div>

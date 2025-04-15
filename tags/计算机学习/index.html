@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>DOTS输入处理 | chu&#39;s Blog</title>
+    <title>Tags: 计算机学习 | chu&#39;s Blog</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -37,10 +37,6 @@
 
 
 <script src="/js/lib/preview.js"></script>
-
-
-
-
 
 
 
@@ -154,67 +150,123 @@
 </transition>
 
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-            <div class="article">
-    <div>
-        <h1>DOTS输入处理</h1>
-    </div>
-    <div class="info">
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2025/2/14
-        </span>
+            <div id="archives">
+    
+    <div class="categories-tags">
         
-        <span class="category">
-            <a href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">
+        
+        
+        <span>
+            <a href="/tags/%E7%BD%91%E7%AB%99%E5%BC%80%E5%8F%91/" style="background: #03a9f4">
                 <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                    <i class="fa-solid fa-tags fa-fw"></i>
                 </span>
-                游戏开发
+                网站开发
             </a>
         </span>
         
         
-        <span class="tags">
-            <span class="icon">
-                <i class="fa-solid fa-tags fa-fw"></i>
-            </span>
-            
-            
-            <span class="tag">
-                
-                <a href="/tags/DOTS/" style="color: #03a9f4">
-                    DOTS
-                </a>
-            </span>
-            
+        
+        <span>
+            <a href="/tags/DOTS/" style="background: #00bcd4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                DOTS
+            </a>
         </span>
+        
+        
+        
+        <span>
+            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                计算机学习
+            </a>
+        </span>
+        
+        
+        
         
     </div>
     
-    <div class="content" v-pre>
-        <ol>
-<li><p>InputEvent，一个标志用于处理一个输入是否被响应过了，同时追踪该输入事件响应过几次（bool+int）</p>
-</li>
-<li><p>NetWorkTime.IsFirstFullPredictingTick，检测是不是一个服务器端的时间步长的开始，如果是就执行，确保了按照服务器端的时间步长执行代码</p>
-</li>
-<li><p>带Ghost的数据会被同步到所有客户端。例如不带Ghost的IInputComponentData，只是从单一客户端发完服务端，带Ghost则会同步到所有客户端</p>
-</li>
-</ol>
-<p><img src="/../images/DOTS%E6%80%BB%E7%BB%93/14.png"></p>
-
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2025/4/16</div>
+            <a href="/2025/04/16/CS61A%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">
+                <h3>CS61A学习总结</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E7%BC%96%E7%A8%8B/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        编程
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0/" style="color: #00a596">
+                            计算机学习
+                        </a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
     </div>
     
-    
-    
-    
-    <div id="comment">
-        <div id="giscus-container" class="giscus"></div>
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2024/11/27</div>
+            <a href="/2024/11/27/CS61B%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">
+                <h3>CS61B学习总结</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E7%BC%96%E7%A8%8B/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        编程
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0/" style="color: #00a596">
+                            计算机学习
+                        </a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
     </div>
-    
-    
-    
     
 </div>
 
@@ -246,29 +298,6 @@
         
     </div>
     <script src="/js/main.js"></script>
-    
-    
-<script
-    src=""
-    data-repo="chu123122/blog"
-    data-repo-id=""
-    data-category="Announcements"
-    data-category-id=""
-    data-mapping="pathname"
-    data-strict="0"
-    data-reactions-enabled=""
-    data-emit-metadata=""
-    data-input-position=""
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin
-    async
-></script>
-
-
-
-
-
     
 </body>
 </html>
