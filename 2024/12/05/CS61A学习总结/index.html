@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Tags: 计算机学习 | chu&#39;s Blog</title>
+    <title>CS61A学习总结 | chu&#39;s Blog</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -37,6 +37,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -150,134 +154,83 @@
 </transition>
 
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-            <div id="archives">
-    
-    <div class="categories-tags">
+            <div class="article">
+    <div>
+        <h1>CS61A学习总结</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2024/12/5
+        </span>
         
-        
-        
-        <span>
-            <a href="/tags/%E7%BD%91%E7%AB%99%E5%BC%80%E5%8F%91/" style="background: #ff7d73">
+        <span class="category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B/">
                 <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
-                网站开发
+                编程
             </a>
         </span>
         
         
-        
-        <span>
-            <a href="/tags/DOTS/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                DOTS
-            </a>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0/" style="color: #03a9f4">
+                    计算机学习
+                </a>
+            </span>
+            
         </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                计算机学习
-            </a>
-        </span>
-        
-        
-        
-        
-        
-        <span>
-            <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                设计模式
-            </a>
-        </span>
-        
         
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2024/12/27</div>
-            <a href="/2024/12/27/CS61B%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">
-                <h3>CS61B学习总结</h3>
-            </a>
-            <div class="info">
-                
-                <span class="category">
-                    <a href="/categories/%E7%BC%96%E7%A8%8B/">
-                        <span class="icon">
-                            <i class="fa-solid fa-bookmark fa-fw"></i>
-                        </span>
-                        编程
-                    </a>
-                </span>
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0/" style="color: #03a9f4">
-                            计算机学习
-                        </a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    <div class="content" v-pre>
+        <h4 id="1-数据抽象"><a href="#1-数据抽象" class="headerlink" title="1. 数据抽象"></a>1. <em><strong><strong>数据抽象</strong></strong></em></h4><p>使用函数构建抽象的·过程即将不同的作用代码抽象为一个个函数名称，将关注点从里面具体的代码实现转移到函数的作用，只需理解一个函数的需要的参数，输出的结果类型，发挥的作用即可。</p>
+<p>使用数据构建抽象的过程大致可分为三个部分：</p>
+<ol>
+<li>操作抽象数据</li>
+<li>定义具体表示</li>
+<li>一组根据具体表示实现抽象数据的函数将两部分相连<br>解释：<br> （1）操作抽象数据即构建的数据结构中操作的函数<br> eg：List里的Add（），Detele（）<br> （2）定义具体表示即所抽象出来的数据的具体，用户是如何定义这个数据结构的<br> eg：Point定义为有x，y坐标的一个点<br> （3）相连部分即如何根据实际数据构建起抽象数据的函数，也就是构造函数和选择函数<br><img src="/../images/CS61A%E6%80%BB%E7%BB%93/1.png"></li>
+</ol>
+<h4 id="2-递归"><a href="#2-递归" class="headerlink" title="2. 递归"></a>2. <em><strong><strong>递归</strong></strong></em></h4><p>递归的构建集中于三个点：</p>
+<ol>
+<li><p><em><strong>Base case</strong></em><br> 递归退出的条件，亦或者是递归可以进入的最小值 ,作为退出递归的条件</p>
+</li>
+<li><p><em><strong>Recursive call on a smaller problem</strong></em><br> 递归逐渐减小的问题，关注递归如何通过逐渐减小来把一个问题逐渐变简单</p>
+</li>
+<li><p><em><strong>Solve the larger problem</strong></em><br> 如何将一个个逐渐减小难度的问题集合在一起，从而形成一个大问题的答案</p>
+</li>
+</ol>
+<p>注1：Base case的情况（退出递归）的增加可以有效减少递归的深度<br>注2：尾递归指只在一次步骤中进行所有递归操作，部分编译器可以对尾递归进行优化，从而降低深度、<br><img src="/../images/CS61A%E6%80%BB%E7%BB%93/2.png"></p>
+<h4 id="2-尾递归"><a href="#2-尾递归" class="headerlink" title="2. 尾递归"></a>2. <em><strong><strong>尾递归</strong></strong></em></h4><p>尾递归的原理是通过一个内置helper Function的函数，将当前调用的函数转化为一个helper Function，调用返回的是一个无参函数，从而结束了当前帧。而在帮助函数里，它返回它外面的函数，而这个外面的函数再次返回的仍然是一个helper Function，从而继续结束当前帧，如此循环（也就是将这个函数包装起来了，thunk）<br>   再通过另一个拆包的函数来实现调用，一个简单循环如果拆开的函数仍然是一个thunk则继续拆包，知道拆出来的是一个value（Trampolining）</p>
+<p><em><strong>一个包装函数和一个拆包函数相互作用，从而在尾递归调用中减少了大量中间帧的保持。</strong></em></p>
+<p>尾递归的定义：在调用递归函数其本身前不做其他任何事情<br><img src="/../images/CS61A%E6%80%BB%E7%BB%93/3.png"></p>
+<h4 id="3-Scheme解释器思考记录"><a href="#3-Scheme解释器思考记录" class="headerlink" title="3. Scheme解释器思考记录"></a>3. <strong><strong><strong>Scheme解释器思考记录</strong></strong></strong></h4><p>为了在scheme解释器里面实现尾递归的优化，需要在评估一个函数时，确定其是否为一个尾递归还是一个普通递归，如果其为尾递归则对其单独处理。<br>利用打包函数将尾递归的多次调用封装在一个每次循环return的调用中，从而减少了中间帧的保持，再将其递交给拆包函数，实现返回</p>
+<p>注意封装函数的过程不是一次性完成的，而是利用一个函数里面的helper Function来实现一个类似互递归的过程。在每次拆包时的评估过程中如果满足条件就再次封装</p>
+<p>借助非连续的封装过程，可以在每次封装时确定当前调用是否为尾递归调用，从而实现一个递归函数的部分尾递归优化</p>
+<p>注：避免使用递归语句实现函数的功能，可能导致即便尾递归优化了但然后回溢出</p>
+<p>Scheme项目尾递归优化的实现：<br>在if，or，and语句判断中将满足条件的尾递归语句封装为Unevaluated（即代表一个延迟评估的表达式，在优化eval中的helperFunction中），在eval_all中，同样如此<br><img src="/../images/CS61A%E6%80%BB%E7%BB%93/4.png"></p>
+
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2024/12/5</div>
-            <a href="/2024/12/05/CS61A%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">
-                <h3>CS61A学习总结</h3>
-            </a>
-            <div class="info">
-                
-                <span class="category">
-                    <a href="/categories/%E7%BC%96%E7%A8%8B/">
-                        <span class="icon">
-                            <i class="fa-solid fa-bookmark fa-fw"></i>
-                        </span>
-                        编程
-                    </a>
-                </span>
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0/" style="color: #00bcd4">
-                            计算机学习
-                        </a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
     </div>
+    
+    
+    
     
 </div>
 
@@ -309,6 +262,29 @@
         
     </div>
     <script src="/js/main.js"></script>
+    
+    
+<script
+    src=""
+    data-repo="chu123122/blog"
+    data-repo-id=""
+    data-category="Announcements"
+    data-category-id=""
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled=""
+    data-emit-metadata=""
+    data-input-position=""
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
     
 </body>
 </html>
