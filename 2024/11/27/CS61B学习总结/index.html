@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>LLRB和HashTable | chu&#39;s Blog</title>
+    <title>CS61B学习总结 | chu&#39;s Blog</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -156,7 +156,7 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>LLRB和HashTable</h1>
+        <h1>CS61B学习总结</h1>
     </div>
     <div class="info">
         <span class="date">
@@ -170,7 +170,38 @@
     </div>
     
     <div class="content" v-pre>
-        
+        <ol>
+<li><p><em><strong><strong>测试驱动开发的理念（TDD）</strong></strong></em><br>Test-Driven Development (TDD)，测试驱动开发，即指先编写功能的单元测试，再进行功能代码的完成</p>
+<!-- ![](../images/CS61B总结/1.png) ![](../images/CS61B总结/2.png) --></li>
+<li><p><em><strong><strong>数据结构的中间人</strong></strong></em><br> 1） 通过一个嵌套类，将实际的数据结构存储在一个套壳里面，保持数据结构的纯粹性？可以将方法之类的和一些要追踪的数据存储在外面的套壳之中。<br> 2） 通过一个哨兵作为一个初始点，避免了一些特殊的情况（null），哨兵应该始终不访问它，只是作为一个基石类的存在。<br> 3）一个不变量的意义：在编写数据结构时，通过维护不变量的正确性（即避免写相关方法时破坏它），使开发者对于确保数据结构始终处于一种已知的、正确的状态<br>最常见的例子即<em><strong>哨兵节点</strong></em></p>
+</li>
+<li><p><em><strong><strong>接口继承和实现继承</strong></strong></em></p>
+</li>
+<li><p><em><strong><strong>数据结构的效率</strong></strong></em><br>递归合并算法(树的加权合并)：利用将一个列表不断均分来代替排列，从而有效降低了时间复杂度，从线性降低到了对数级别<br>二分法：<br>路径压缩算法：将查找过的节点连接到root上<br>抽象数据类型：不关注数据结构的底层实现原理，更侧重于其封装好的方法（eg：列表的底层原理是数组还是链表，都不影响其方法的调用，不要跨越抽象屏障！）<br>二叉搜索树（BST）：数据结构的复杂度：从线性到对数的巨大飞跃，从不可能到可能，尽量实现对数级别的时间复杂度的操作</p>
+</li>
+<li><p><em><strong><strong>git操作</strong></strong></em></p>
+<ul>
+<li><p>add，push，pull，commit，checkout，switch，log，remote</p>
+</li>
+<li><p>简单的添加（add），提交（commit），推送（push），拉取（pull）</p>
+</li>
+<li><p>实际操作解析</p>
+<ul>
+<li>切换分支（switch） -b，添加新的分支并切换到上面</li>
+<li>查看历史提交记录（log）</li>
+<li>查看远端仓库（remote）</li>
+<li>回退&#x2F;推进历史版本（checkout），添加上利用log查看到的hashcode</li>
+<li>指定回退文件，在checkout后面加上特定的文件从而实现部分回退&#x2F;推进</li>
+</ul>
+</li>
+<li><p>git的操作关注于点，每一个远程仓库在本地有着一个remote_name&#x2F;main指向的文件快照。（可以在log看见详细）当从远端仓库拉取时是将远程的版本同这个点处的版本进行对比。</p>
+</li>
+<li><p>本地仓库有着多个分支和一个HEAD，要注意当你利用checkout切换到一个具体的版本时，HEAD不再指向任何分支而是指向具体的对象（脱离于任何分支）<br> 此时称为：detached HEAD，不要在这种情况下进行文件的修改！可以利用switch切换回对应分支。</p>
+</li>
+</ul>
+</li>
+</ol>
+
     </div>
     
     
