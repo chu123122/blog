@@ -203,12 +203,52 @@
 <h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><ol>
 <li>模型变换</li>
 </ol>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Eigen::Matrix4f <span class="title">get_model_matrix</span><span class="params">(<span class="type">float</span> rotation_angle)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Eigen::Matrix4f model = Eigen::Matrix4f::<span class="built_in">Identity</span>();</span><br><span class="line">		Eigen::Matrix4f rotate_Maxtrix;</span><br><span class="line">		<span class="type">float</span> angle = rotation_angle * MY_PI / <span class="number">180</span>; <span class="comment">//转化为角度</span></span><br><span class="line">		rotate_Maxtrix &lt;&lt;     											<span class="comment">//定义模型变换矩阵（绕z轴旋转）</span></span><br><span class="line">    	<span class="built_in">cos</span>(angle), -<span class="built_in">sin</span>(angle), <span class="number">0</span>, <span class="number">0</span>,</span><br><span class="line">    	<span class="built_in">sin</span>(angle), <span class="built_in">cos</span>(angle), <span class="number">0</span>, <span class="number">0</span>,</span><br><span class="line">    	<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>,</span><br><span class="line">    	<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>;</span><br><span class="line">		model = rotate_Maxtrix * model;						</span><br><span class="line">		<span class="keyword">return</span> model;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="cpp">Eigen::Matrix4f get_model_matrix(float rotation_angle)
+&#123;
+  Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
+  Eigen::Matrix4f rotate_Maxtrix;
+  float angle = rotation_angle * MY_PI / 180; //转化为角度
+  rotate_Maxtrix &lt;&lt;     											//定义模型变换矩阵（绕z轴旋转）
+    cos(angle), -sin(angle), 0, 0,
+    sin(angle), cos(angle), 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1;
+  model = rotate_Maxtrix * model;
+  return model;
+&#125;
+</code></pre>
 <ol start="2">
 <li><p>投影变换</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Eigen::Matrix4f <span class="title">get_projection_matrix</span><span class="params">(<span class="type">float</span> eye_fov, <span class="type">float</span> aspect_ratio,</span></span></span><br><span class="line"><span class="params"><span class="function">                                      <span class="type">float</span> zNear, <span class="type">float</span> zFar)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Eigen::Matrix4f projection = Eigen::Matrix4f::<span class="built_in">Identity</span>();</span><br><span class="line">    Eigen::Matrix4f orthographic_maxtrix;  <span class="comment">//正交矩阵</span></span><br><span class="line"></span><br><span class="line">    <span class="type">float</span> angle = eye_fov * MY_PI / <span class="number">180</span>;</span><br><span class="line">    <span class="type">float</span> t = <span class="built_in">tan</span>(angle / <span class="number">2</span>) * <span class="built_in">abs</span>(zNear); <span class="comment">//top面</span></span><br><span class="line">    <span class="type">float</span> b = -t;													 <span class="comment">//bottom面	 </span></span><br><span class="line">    <span class="type">float</span> r = t * aspect_ratio;						 <span class="comment">//right面</span></span><br><span class="line">    <span class="type">float</span> l = -r;													 <span class="comment">//left面</span></span><br><span class="line"></span><br><span class="line">    orthographic_maxtrix &lt;&lt;								 <span class="comment">//定义正交矩阵</span></span><br><span class="line">        <span class="number">2</span> / (r - l), <span class="number">0</span>, <span class="number">0</span>, -(r + l) / <span class="number">2</span>,</span><br><span class="line">        <span class="number">0</span>, <span class="number">2</span> / (t - b), <span class="number">0</span>, -(t + b) / <span class="number">2</span>,</span><br><span class="line">        <span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span> / (zNear - zFar), -(zNear + zFar) / <span class="number">2</span>,</span><br><span class="line">        <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    Eigen::Matrix4f temp_maxtrix; 				<span class="comment">//转化矩阵（把原先的投影矩阵转化为正交矩阵）</span></span><br><span class="line">    temp_maxtrix &lt;&lt; </span><br><span class="line">        zNear, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>,</span><br><span class="line">        <span class="number">0</span>, zNear, <span class="number">0</span>, <span class="number">0</span>,</span><br><span class="line">        <span class="number">0</span>, <span class="number">0</span>, zNear + zFar, -zFar * zNear,</span><br><span class="line">        <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  	<span class="comment">//注意，矩阵乘法是从右到左，即：投影矩阵= 正交矩阵*转化矩阵</span></span><br><span class="line">    projection = orthographic_maxtrix * temp_maxtrix * projection;</span><br><span class="line">    <span class="keyword">return</span> projection;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="cpp">Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
+                                      float zNear, float zFar)
+&#123;
+    Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
+    Eigen::Matrix4f orthographic_maxtrix;  //正交矩阵
 
+    float angle = eye_fov * MY_PI / 180;
+    float t = tan(angle / 2) * abs(zNear); //top面
+    float b = -t;													 //bottom面	 
+    float r = t * aspect_ratio;						 //right面
+    float l = -r;													 //left面
+
+    orthographic_maxtrix &lt;&lt;								 //定义正交矩阵
+        2 / (r - l), 0, 0, -(r + l) / 2,
+        0, 2 / (t - b), 0, -(t + b) / 2,
+        0, 0, 2 / (zNear - zFar), -(zNear + zFar) / 2,
+        0, 0, 0, 1;
+
+    Eigen::Matrix4f temp_maxtrix; 				//转化矩阵（把原先的投影矩阵转化为正交矩阵）
+    temp_maxtrix &lt;&lt; 
+        zNear, 0, 0, 0,
+        0, zNear, 0, 0,
+        0, 0, zNear + zFar, -zFar * zNear,
+        0, 0, 1, 0;
+
+      //注意，矩阵乘法是从右到左，即：投影矩阵= 正交矩阵*转化矩阵
+    projection = orthographic_maxtrix * temp_maxtrix * projection;
+    return projection;
+&#125;
+</code></pre>
 <img src="../images//GAMES101/gifs/proj1/1.gif" alt="proj1" style="zoom:50%;" /></li>
 </ol>
 <p>​		   <em>图1：使用MVP矩阵实现的绕Z轴旋转的三角形</em></p>
