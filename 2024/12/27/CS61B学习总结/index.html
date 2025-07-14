@@ -184,7 +184,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0/" style="color: #ff7d73">
+                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0/" style="color: #03a9f4">
                     计算机学习
                 </a>
             </span>
@@ -194,9 +194,9 @@
     </div>
     
     <div class="content" v-pre>
-        <h4 id="1-测试驱动开发的理念（TDD）"><a href="#1-测试驱动开发的理念（TDD）" class="headerlink" title="1. 测试驱动开发的理念（TDD）"></a>1. <em><strong><strong>测试驱动开发的理念（TDD）</strong></strong></em></h4><p>Test-Driven Development (TDD)，测试驱动开发，即指先编写功能的单元测试，再进行功能代码的完成<br><img src="/../images/CS61B%E6%80%BB%E7%BB%93/1.png"> <img src="/../images/CS61B%E6%80%BB%E7%BB%93/2.png"></p>
-<h4 id="2-数据结构的中间人"><a href="#2-数据结构的中间人" class="headerlink" title="2. 数据结构的中间人"></a>2. <em><strong><strong>数据结构的中间人</strong></strong></em></h4><p>通过一个嵌套类，将实际的数据结构存储在一个套壳里面，保持数据结构的纯粹性？可以将方法之类的和一些要追踪的数据存储在外面的套壳之中。<br>通过一个哨兵作为一个初始点，避免了一些特殊的情况（null），哨兵应该始终不访问它，只是作为一个基石类的存在。<br>一个不变量的意义：在编写数据结构时，通过维护不变量的正确性（即避免写相关方法时破坏它），使开发者对于确保数据结构始终处于一种已知的、正确的状态<br>最常见的例子即 <strong>哨兵节点</strong><br><img src="/../images/CS61B%E6%80%BB%E7%BB%93/3.png"></p>
-<h4 id="3-接口继承和实现继承"><a href="#3-接口继承和实现继承" class="headerlink" title="3. 接口继承和实现继承"></a>3. <em><strong><strong>接口继承和实现继承</strong></strong></em></h4><p>接口继承：不包含默认方法的接口实现<br>实现继承：类继承和包含默认方法的接口实现<br>二者都归属于is-a的类型，不要用于has-a的类型<br><img src="/../images/CS61B%E6%80%BB%E7%BB%93/5.png"></p>
+        <h4 id="1-测试驱动开发的理念（TDD）"><a href="#1-测试驱动开发的理念（TDD）" class="headerlink" title="1. 测试驱动开发的理念（TDD）"></a>1. <em><strong><strong>测试驱动开发的理念（TDD）</strong></strong></em></h4><p>Test-Driven Development (TDD)，测试驱动开发，即指先编写功能的单元测试，再进行功能代码的完成<br><img src="/2024/12/27/CS61B%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/../../images/CS61B%E6%80%BB%E7%BB%93/1.png"> <img src="/2024/12/27/CS61B%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/../../images/CS61B%E6%80%BB%E7%BB%93/2.png"></p>
+<h4 id="2-数据结构的中间人"><a href="#2-数据结构的中间人" class="headerlink" title="2. 数据结构的中间人"></a>2. <em><strong><strong>数据结构的中间人</strong></strong></em></h4><p>通过一个嵌套类，将实际的数据结构存储在一个套壳里面，保持数据结构的纯粹性？可以将方法之类的和一些要追踪的数据存储在外面的套壳之中。<br>通过一个哨兵作为一个初始点，避免了一些特殊的情况（null），哨兵应该始终不访问它，只是作为一个基石类的存在。<br>一个不变量的意义：在编写数据结构时，通过维护不变量的正确性（即避免写相关方法时破坏它），使开发者对于确保数据结构始终处于一种已知的、正确的状态<br>最常见的例子即 <strong>哨兵节点</strong><br><img src="/2024/12/27/CS61B%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/../../images/CS61B%E6%80%BB%E7%BB%93/3.png"></p>
+<h4 id="3-接口继承和实现继承"><a href="#3-接口继承和实现继承" class="headerlink" title="3. 接口继承和实现继承"></a>3. <em><strong><strong>接口继承和实现继承</strong></strong></em></h4><p>接口继承：不包含默认方法的接口实现<br>实现继承：类继承和包含默认方法的接口实现<br>二者都归属于is-a的类型，不要用于has-a的类型<br><img src="/2024/12/27/CS61B%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/../../images/CS61B%E6%80%BB%E7%BB%93/5.png"></p>
 <h4 id="4-数据结构的效率"><a href="#4-数据结构的效率" class="headerlink" title="4. 数据结构的效率"></a>4. <em><strong><strong>数据结构的效率</strong></strong></em></h4><p>递归合并算法(树的加权合并)：利用将一个列表不断均分来代替排列，从而有效降低了时间复杂度，从线性降低到了对数级别<br>二分法：<br>路径压缩算法：将查找过的节点连接到root上<br>抽象数据类型：不关注数据结构的底层实现原理，更侧重于其封装好的方法（eg：列表的底层原理是数组还是链表，都不影响其方法的调用，不要跨越抽象屏障！）<br>二叉搜索树（BST）：数据结构的复杂度：从线性到对数的巨大飞跃，从不可能到可能，尽量实现对数级别的时间复杂度的操作</p>
 <h4 id="5-git操作"><a href="#5-git操作" class="headerlink" title="5. git操作"></a>5. <em><strong><strong>git操作</strong></strong></em></h4><ul>
 <li><p>add，push，pull，commit，checkout，switch，log，remote</p>
