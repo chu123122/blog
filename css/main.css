@@ -570,7 +570,7 @@
     line-height: 2;
     overflow: auto;
     padding: 50px 30px 20px;
-    white-space: normal;
+    white-space: pre-wrap;
 }
 
 .comment iframe,
@@ -888,7 +888,16 @@ mark {
     padding: 4px 8px;
 }
 
-p,
+p {
+  line-height: 1.7;
+  margin: 15px 0;
+}
+
+/* 只对“不是列表项中的段落”进行首行缩进 */
+p:not(li p) {
+  text-indent: 2em;
+}
+
 ul,
 ol {
     line-height: 1.7;
@@ -1151,4 +1160,5 @@ ol li {
     ol {
         padding-left: 20px;
     }
+
 }

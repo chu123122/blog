@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>GAMES101笔记与实践总结1—MVP矩阵变换 | chu&#39;s Blog</title>
+    <title>GAMES101学习之路(一)：深入理解MVP变换 | chu&#39;s Blog</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -156,7 +156,7 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>GAMES101笔记与实践总结1—MVP矩阵变换</h1>
+        <h1>GAMES101学习之路(一)：深入理解MVP变换</h1>
     </div>
     <div class="info">
         <span class="date">
@@ -179,14 +179,19 @@
 <li><p>投影变换，为了确定摄像机是如何看物体，我们可以选择<em>正交投影</em>和<em>透视投影</em>，表明了物体在摄像机下是如何被看待的，选择好了<strong>摄像机“如何看物体”</strong>（例如调整摄像机的”摄影模式“）</p>
 </li>
 </ul>
-<p><img src="/../images/GAMES101/images/proj1/1.png" alt="MVP说明图1"></p>
-<p>  ​	而为了标准化的将物体的<em>平移</em>、<em>旋转</em>、<em>缩放</em>表示出来，我们便选用了<strong>齐次坐标系</strong>下的表达方式来表现（让所有变换可以表示为一个矩阵乘以一个向量的形式）</p>
+<p><img src="/../images/GAMES101/images/proj1/1.png" alt="图1：MVP说明图1"></p>
+<p style="text-align: center;">
+  &nbsp;&nbsp;图1：MVP说明图
+</p>
+
+
+<p>而为了标准化的将物体的<em>平移</em>、<em>旋转</em>、<em>缩放</em>表示出来，我们便选用了<strong>齐次坐标系</strong>下的表达方式来表现（让所有变换可以表示为一个矩阵乘以一个向量的形式），这种表示方式可以解决几何变换中平移异常的问题。</p>
 <p><img src="/../images/GAMES101/images/proj1/2.png" alt="齐次坐标变换图"></p>
 <p>  ​	同时，需要注意的是，平面中一个点是二维的存在，而为了区分点和向量之间的区别，我们引入了”第三维度“，点的z值始终为1，向量的z值始终为0。（同理空间中也如此）</p>
 <p><img src="/../images/GAMES101/images/proj1/3.png" alt="点和向量的z值示意图"></p>
 <p><img src="/../images/GAMES101/images/proj1/4.png" alt="旋转矩阵图"></p>
 <p>  ​					<em>空间中旋转矩阵的表示</em></p>
-<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><h4 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h4><ul>
 <li><p>M ——<strong>Model</strong> 模型变换</p>
 <p>将物体由其自己的<strong>模型空间</strong>，通过<em>平移</em>、<em>旋转</em>、<em>缩放</em>变换，到<strong>世界空间</strong>下。由局部的坐标系到全局的规范坐标系下</p>
 </li>
@@ -197,10 +202,8 @@
 <p>通过<strong>正交投影</strong>或者<strong>透视投影</strong>来实现把原本的物体压缩到一个中心在原点，2 * 2 * 2的标准立方体里面（其xyz坐标范围均为[-1, 1]）</p>
 </li>
 </ul>
-<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><ol>
-<li>模型变换</li>
-</ol>
-<pre><code class="cpp">Eigen::Matrix4f get_model_matrix(float rotation_angle)
+<h4 id="齐次坐标系"><a href="#齐次坐标系" class="headerlink" title="齐次坐标系"></a>齐次坐标系</h4><p><strong>通过增加一个额外的维度（w分量），来表示更低维度的空间。这样做的核心目的，是为了用同一种数学运算（矩阵乘法）来统一表示所有的几何变换（特别是平移）。</strong></p>
+<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><h4 id="1-模型变换"><a href="#1-模型变换" class="headerlink" title="1. 模型变换"></a>1. 模型变换</h4><pre><code class="cpp">Eigen::Matrix4f get_model_matrix(float rotation_angle)
 &#123;
   Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
   Eigen::Matrix4f rotate_Maxtrix;
@@ -214,43 +217,40 @@
   return model;
 &#125;
 </code></pre>
-<ol start="2">
-<li><p>投影变换</p>
-<pre><code class="cpp">Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
+<h4 id="2-投影变换"><a href="#2-投影变换" class="headerlink" title="2. 投影变换"></a>2. 投影变换</h4><pre><code class="cpp">Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
                                       float zNear, float zFar)
 &#123;
-     Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
-     Eigen::Matrix4f orthographic_maxtrix;  //正交矩阵
- 
-     float angle = eye_fov * MY_PI / 180;
-     float t = tan(angle / 2) * abs(zNear); //top面
-     float b = -t;													 //bottom面	 
-     float r = t * aspect_ratio;						 //right面
-     float l = -r;													 //left面
- 
-     orthographic_maxtrix &lt;&lt;								 //定义正交矩阵
-         2 / (r - l), 0, 0, -(r + l) / 2,
-         0, 2 / (t - b), 0, -(t + b) / 2,
-         0, 0, 2 / (zNear - zFar), -(zNear + zFar) / 2,
-         0, 0, 0, 1;
- 
-     Eigen::Matrix4f temp_maxtrix; 				//转化矩阵（把原先的投影矩阵转化为正交矩阵）
-     temp_maxtrix &lt;&lt; 
-         zNear, 0, 0, 0,
-         0, zNear, 0, 0,
-         0, 0, zNear + zFar, -zFar * zNear,
-         0, 0, 1, 0;
- 
-     //注意，矩阵乘法是从右到左，即：投影矩阵= 正交矩阵*转化矩阵
-     projection = orthographic_maxtrix * temp_maxtrix * projection;
-     return projection;
+  Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
+  Eigen::Matrix4f orthographic_maxtrix;   //正交矩阵
+
+  float angle = eye_fov * MY_PI / 180;   
+  float t = tan(angle / 2) * abs(zNear);  //top面
+  float b = -t;                           //bottom面	 
+  float r = t * aspect_ratio;             //right面
+  float l = -r;	                          //left面
+
+  orthographic_maxtrix &lt;&lt;                 //定义正交矩阵
+  2 / (r - l), 0, 0, -(r + l) / 2,
+  0, 2 / (t - b), 0, -(t + b) / 2,
+  0, 0, 2 / (zNear - zFar), -(zNear + zFar) / 2,
+  0, 0, 0, 1;
+
+  Eigen::Matrix4f temp_maxtrix;           //转化矩阵（把原先的投影矩阵转化为正交矩阵）
+  temp_maxtrix &lt;&lt; 
+    zNear, 0, 0, 0,
+  0, zNear, 0, 0,
+  0, 0, zNear + zFar, -zFar * zNear,
+  0, 0, 1, 0;
+
+  //注意，矩阵乘法是从右到左，即：投影矩阵= 正交矩阵*转化矩阵
+  projection = orthographic_maxtrix * temp_maxtrix * projection;
+  return projection;
 &#125;
 </code></pre>
-</li>
-</ol>
-<p><img src="/../images/GAMES101/gifs/proj1/1.gif" alt="效果示范"></p>
-<p>​		    <em>图1：使用MVP矩阵实现的绕Z轴旋转的三角形</em></p>
-
+<p><img src="/../images/GAMES101/gifs/proj1/%E9%80%8F%E8%A7%86%E6%8A%95%E5%BD%B1%E6%97%8B%E8%BD%AC.gif" alt="透视投影旋转"></p>
+<p>​		     <em>图1：使用MVP矩阵实现的绕Z轴旋转的三角形</em></p>
+<p><img src="/../images/GAMES101/gifs/proj1/%E6%AD%A3%E4%BA%A4%E6%8A%95%E5%BD%B1%E6%97%8B%E8%BD%AC.gif" alt="正交投影旋转"></p>
+<h4 id="3-透视投影矩阵的推导"><a href="#3-透视投影矩阵的推导" class="headerlink" title="3. 透视投影矩阵的推导"></a>3. 透视投影矩阵的推导</h4>
     </div>
     
     
