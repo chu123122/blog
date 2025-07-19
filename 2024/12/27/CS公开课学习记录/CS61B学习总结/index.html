@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>CS61B学习总结 | chu&#39;s Blog</title>
+    <meta name="author" content="楽酌" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/%E5%A4%B4%E5%83%8F.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>CHU&#39;S BLOG</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;CHU&#39;S BLOG</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>CS61B学习总结</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2024/12/27
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                编程
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0/" style="color: #00a596">
+                    计算机学习
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h4 id="1-测试驱动开发的理念（TDD）"><a href="#1-测试驱动开发的理念（TDD）" class="headerlink" title="1. 测试驱动开发的理念（TDD）"></a>1. <em><strong><strong>测试驱动开发的理念（TDD）</strong></strong></em></h4><p>Test-Driven Development (TDD)，测试驱动开发，即指先编写功能的单元测试，再进行功能代码的完成<br><img src="/2024/12/27/CS%E5%85%AC%E5%BC%80%E8%AF%BE%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/CS61B%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/../../images/CS61B%E6%80%BB%E7%BB%93/1.png"> <img src="/2024/12/27/CS%E5%85%AC%E5%BC%80%E8%AF%BE%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/CS61B%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/../../images/CS61B%E6%80%BB%E7%BB%93/2.png"></p>
+<h4 id="2-数据结构的中间人"><a href="#2-数据结构的中间人" class="headerlink" title="2. 数据结构的中间人"></a>2. <em><strong><strong>数据结构的中间人</strong></strong></em></h4><p>通过一个嵌套类，将实际的数据结构存储在一个套壳里面，保持数据结构的纯粹性？可以将方法之类的和一些要追踪的数据存储在外面的套壳之中。<br>通过一个哨兵作为一个初始点，避免了一些特殊的情况（null），哨兵应该始终不访问它，只是作为一个基石类的存在。<br>一个不变量的意义：在编写数据结构时，通过维护不变量的正确性（即避免写相关方法时破坏它），使开发者对于确保数据结构始终处于一种已知的、正确的状态<br>最常见的例子即 <strong>哨兵节点</strong><br><img src="/2024/12/27/CS%E5%85%AC%E5%BC%80%E8%AF%BE%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/CS61B%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/../../images/CS61B%E6%80%BB%E7%BB%93/3.png"></p>
+<h4 id="3-接口继承和实现继承"><a href="#3-接口继承和实现继承" class="headerlink" title="3. 接口继承和实现继承"></a>3. <em><strong><strong>接口继承和实现继承</strong></strong></em></h4><p>接口继承：不包含默认方法的接口实现<br>实现继承：类继承和包含默认方法的接口实现<br>二者都归属于is-a的类型，不要用于has-a的类型<br><img src="/2024/12/27/CS%E5%85%AC%E5%BC%80%E8%AF%BE%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/CS61B%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/../../images/CS61B%E6%80%BB%E7%BB%93/5.png"></p>
+<h4 id="4-数据结构的效率"><a href="#4-数据结构的效率" class="headerlink" title="4. 数据结构的效率"></a>4. <em><strong><strong>数据结构的效率</strong></strong></em></h4><p>递归合并算法(树的加权合并)：利用将一个列表不断均分来代替排列，从而有效降低了时间复杂度，从线性降低到了对数级别<br>二分法：<br>路径压缩算法：将查找过的节点连接到root上<br>抽象数据类型：不关注数据结构的底层实现原理，更侧重于其封装好的方法（eg：列表的底层原理是数组还是链表，都不影响其方法的调用，不要跨越抽象屏障！）<br>二叉搜索树（BST）：数据结构的复杂度：从线性到对数的巨大飞跃，从不可能到可能，尽量实现对数级别的时间复杂度的操作</p>
+<h4 id="5-git操作"><a href="#5-git操作" class="headerlink" title="5. git操作"></a>5. <em><strong><strong>git操作</strong></strong></em></h4><ul>
+<li><p>add，push，pull，commit，checkout，switch，log，remote</p>
+</li>
+<li><p>简单的添加（add），提交（commit），推送（push），拉取（pull）</p>
+</li>
+<li><p>实际操作解析</p>
+<ul>
+<li>切换分支（switch） -b，添加新的分支并切换到上面</li>
+<li>查看历史提交记录（log）</li>
+<li>查看远端仓库（remote）</li>
+<li>回退&#x2F;推进历史版本（checkout），添加上利用log查看到的hashcode</li>
+<li>指定回退文件，在checkout后面加上特定的文件从而实现部分回退&#x2F;推进</li>
+</ul>
+</li>
+<li><p>git的操作关注于点，每一个远程仓库在本地有着一个remote_name&#x2F;main指向的文件快照。（可以在log看见详细）当从远端仓库拉取时是将远程的版本同这个点处的版本进行对比。</p>
+</li>
+<li><p>本地仓库有着多个分支和一个HEAD，要注意当你利用checkout切换到一个具体的版本时，HEAD不再指向任何分支而是指向具体的对象（脱离于任何分支）<br>此时称为：detached HEAD，不要在这种情况下进行文件的修改！可以利用switch切换回对应分支。</p>
+</li>
+</ul>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2024 - 2025 chu&#39;s Blog
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;楽酌
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src=""
+    data-repo="chu123122/blog"
+    data-repo-id=""
+    data-category="Announcements"
+    data-category-id=""
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled=""
+    data-emit-metadata=""
+    data-input-position=""
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+</body>
+</html>
