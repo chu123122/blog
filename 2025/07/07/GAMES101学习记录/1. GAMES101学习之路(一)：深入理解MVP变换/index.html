@@ -181,18 +181,17 @@
 </ul>
 <p>而为了标准化的将物体的<em>平移</em>、<em>旋转</em>、<em>缩放</em>表示出来，我们便选用了<strong>齐次坐标系</strong>下的表达方式来表现（让所有变换可以表示为一个矩阵乘以一个向量的形式），这种表示方式可以解决几何变换中平移异常的问题。</p>
 <p> 同时，需要注意的是，平面中一个点是二维的存在，而为了区分点和向量之间的区别，我们引入了”第三维度“，点的z值始终为1，向量的z值始终为0。（同理空间中也如此）</p>
-<img src="/images/GAMES101/images/proj1/3.png" alt="点和向量的z值示意图" style="zoom: 80%;" />
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/3.png" alt="点和向量的z值示意图" style="zoom: 80%;" />
 
 <p style="text-align: center;">
   &nbsp;&nbsp;齐次坐标系下二维空间中点和向量的表示
 </p>
-<img src="/images/GAMES101/images/proj1/1.png" alt="图1：MVP说明图1" style="zoom: 33%;" />
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/1.png" alt="图1：MVP说明图1" style="zoom: 33%;" />
 
 <p style="text-align: center;">
   &nbsp;&nbsp;缩放、旋转、位移矩阵示例
 </p>
-
-<img src="/images/GAMES101/images/proj1/4.png" alt="旋转矩阵图" style="zoom: 33%;" />
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/4.png" alt="旋转矩阵图" style="zoom: 33%;" />
 
 <p>  ​					</p>
 <p style="text-align: center;">
@@ -208,7 +207,7 @@
 </li>
 <li><p>P —— <strong>Projection</strong>  投影变换</p>
 <p>通过<strong>正交投影</strong>或者<strong>透视投影</strong>来实现把原本的物体压缩到一个中心在原点，2 * 2 * 2的标准立方体里面（其xyz坐标范围均为[-1, 1]）</p>
-<img src="/images/GAMES101/images/proj1/2.png" alt="齐次坐标变换图" style="zoom: 33%;" />
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/2.png" alt="齐次坐标变换图" style="zoom: 33%;" />
 
 <p style="text-align: center;">
   &nbsp;&nbsp;透视投影vs正交投影
@@ -280,15 +279,14 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
   return projection;
 &#125;
 </code></pre>
-<img src="/images/GAMES101/gifs/proj1/透视投影旋转.gif" alt="透视投影旋转" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E9%80%8F%E8%A7%86%E6%8A%95%E5%BD%B1%E6%97%8B%E8%BD%AC.gif" alt="透视投影旋转" style="zoom:50%;" />
 
 <p style="text-align: center;">
   &nbsp;&nbsp;运用透视投影的三角形旋转
 </p>
 
 
-
-<img src="/images/GAMES101/gifs/proj1/正交投影旋转.gif" alt="正交投影旋转" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E6%AD%A3%E4%BA%A4%E6%8A%95%E5%BD%B1%E6%97%8B%E8%BD%AC.gif" alt="正交投影旋转" style="zoom:50%;" />
 
 
 

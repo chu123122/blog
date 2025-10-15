@@ -179,10 +179,12 @@
     </div>
     
     <div class="content" v-pre>
-        <h3 id="实现结果展示"><a href="#实现结果展示" class="headerlink" title="实现结果展示"></a>实现结果展示</h3><p><img src="/2025/01/06/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/%E5%B8%A7%E5%90%8C%E6%AD%A5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E8%AE%B0%E5%BD%95/.././../../../useful/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/Hexo/source/images/GAMES101/images/%E5%B8%A7%E5%90%8C%E6%AD%A5%E6%95%88%E6%9E%9C%E6%BC%94%E7%A4%BA-%E5%BC%80%E5%A7%8B-1760276366596-5.png"></p>
+        <h3 id="实现结果展示"><a href="#实现结果展示" class="headerlink" title="实现结果展示"></a>实现结果展示</h3><img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E5%B8%A7%E5%90%8C%E6%AD%A5%E6%95%88%E6%9E%9C%E6%BC%94%E7%A4%BA-%E5%BC%80%E5%A7%8B.png"/>
+
 <p>给予一个初始方向的力</p>
-<p><img src="/2025/01/06/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/%E5%B8%A7%E5%90%8C%E6%AD%A5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E8%AE%B0%E5%BD%95/.././../../../useful/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/Hexo/source/images/GAMES101/images/%E5%B8%A7%E5%90%8C%E6%AD%A5%E7%B3%BB%E7%BB%9F%E6%BC%94%E7%A4%BA%E6%95%88%E6%9E%9C-1760276368850-7.png"></p>
-<p>演示中多个客户端在给予初始球体一个碰撞后运行轨迹完全一致，同时世界哈希值（物体速度、位置、方向决定）计算值完全一致</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E5%B8%A7%E5%90%8C%E6%AD%A5%E7%B3%BB%E7%BB%9F%E6%BC%94%E7%A4%BA%E6%95%88%E6%9E%9C.png"/>
+演示中多个客户端在给予初始球体一个碰撞后运行轨迹完全一致，同时世界哈希值（物体速度、位置、方向决定）计算值完全一致
+
 <h3 id="帧同步的介绍"><a href="#帧同步的介绍" class="headerlink" title="帧同步的介绍"></a>帧同步的介绍</h3><p>对于网络多人游戏，如何在不可靠的网络上建立起一个共享一致的虚拟世界是一个重要的问题，主流的两种解决方案分别是：<strong>状态同步</strong>和<strong>帧同步</strong>。</p>
 <p>状态同步，个人的理解是：可以概括为<strong>结果同步</strong>。由服务端周期性地将游戏物体的状态数据发放给各个客户端，各客户端接收到数据后进行插值同步，常用于<strong>卡牌、策略、回合制</strong>等无需高精度的游戏。（服务端持有权威世界，客户端强制性同步）</p>
 <p>帧同步，我目前的理解是：<strong>确定性世界</strong>中的<strong>输入同步</strong>。在每一帧（或固定的时间步）中，所有玩家的<strong>输入操作</strong>被收集并广播给所有客户端，每个客户端再用完全一致的逻辑去<strong>本地计算游戏状态</strong>，从而保持整个游戏世界的一致性。常用于 <strong>RTS、格斗、MOBA</strong> 等操作频繁、需要精确一致的游戏。（服务端只持有输入历史，客户端各跑各的，所以确定性世界的构建无比重要，不过这种实现是很古早的版本了）</p>
