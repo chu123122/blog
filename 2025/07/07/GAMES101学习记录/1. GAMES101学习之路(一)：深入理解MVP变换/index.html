@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>GAMES101学习之路(一)：深入理解MVP变换 | chu&#39;s Blog</title>
+    <meta name="author" content="楽酌" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/%E5%A4%B4%E5%83%8F.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>CHU&#39;S BLOG</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;CHU&#39;S BLOG</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>GAMES101学习之路(一)：深入理解MVP变换</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/7/7
+        </span>
+        
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h3 id="为什么要MVP变换？"><a href="#为什么要MVP变换？" class="headerlink" title="为什么要MVP变换？"></a>为什么要MVP变换？</h3><p>对于现代计算机gj来说，如何把一个现实空间中的3维物体呈现在2维的屏幕空间中，需要确定的就是，<strong>物体“在哪里”</strong>，<strong>摄像机的“位置和朝向”</strong>，<strong>摄像机“如何看物体”</strong>。由此便引出来了<em>MVP变换</em>。</p>
+<ul>
+<li><p>模型变换 ，为了找到物体的位置，我们通过将处在局部坐标系的物体，通过变换位移到<em>全局坐标系</em>下面，从而确定了<strong>物体“在哪里”</strong>。（例如把一个物体从小房间移动到了标准的大房间里面）</p>
+</li>
+<li><p>视图变换，为了确定摄像机的<em>位置</em>和<em>朝向</em>，我们把摄像机的位置给固定下来，并后续更好的拍照，因此确实了<strong>摄像机的“位置和朝向”</strong>（例如把拍摄物体的摄像头，位置和拍摄方向给定好，找准一个好的角度）</p>
+</li>
+<li><p>投影变换，为了确定摄像机是如何看物体，我们可以选择<em>正交投影</em>和<em>透视投影</em>，表明了物体在摄像机下是如何被看待的，选择好了<strong>摄像机“如何看物体”</strong>（例如调整摄像机的”摄影模式“）</p>
+</li>
+</ul>
+<p>而为了标准化的将物体的<em>平移</em>、<em>旋转</em>、<em>缩放</em>表示出来，我们便选用了<strong>齐次坐标系</strong>下的表达方式来表现（让所有变换可以表示为一个矩阵乘以一个向量的形式），这种表示方式可以解决几何变换中平移异常的问题。</p>
+<p> 同时，需要注意的是，平面中一个点是二维的存在，而为了区分点和向量之间的区别，我们引入了”第三维度“，点的z值始终为1，向量的z值始终为0。（同理空间中也如此）</p>
+<img src="/images/GAMES101/images/proj1/3.png" alt="点和向量的z值示意图" style="zoom: 80%;" />
+
+<p style="text-align: center;">
+  &nbsp;&nbsp;齐次坐标系下二维空间中点和向量的表示
+</p>
+<img src="/images/GAMES101/images/proj1/1.png" alt="图1：MVP说明图1" style="zoom: 33%;" />
+
+<p style="text-align: center;">
+  &nbsp;&nbsp;缩放、旋转、位移矩阵示例
+</p>
+
+<img src="/images/GAMES101/images/proj1/4.png" alt="旋转矩阵图" style="zoom: 33%;" />
+
+<p>  ​					</p>
+<p style="text-align: center;">
+  &nbsp;&nbsp;空间中旋转矩阵的表示
+</p>
+
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><h4 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h4><ul>
+<li><p>M ——<strong>Model</strong> 模型变换</p>
+<p>将物体由其自己的<strong>模型空间</strong>，通过<em>平移</em>、<em>旋转</em>、<em>缩放</em>变换，到<strong>世界空间</strong>下。由局部的坐标系到全局的规范坐标系下</p>
+</li>
+<li><p>V —— <strong>View</strong>  视图变换</p>
+<p>调整整个世界空间，从而让摄像机始终在观察<strong>（0，0，0）</strong>原点和**-z方向**，有利于简化后续的计算</p>
+</li>
+<li><p>P —— <strong>Projection</strong>  投影变换</p>
+<p>通过<strong>正交投影</strong>或者<strong>透视投影</strong>来实现把原本的物体压缩到一个中心在原点，2 * 2 * 2的标准立方体里面（其xyz坐标范围均为[-1, 1]）</p>
+<img src="/images/GAMES101/images/proj1/2.png" alt="齐次坐标变换图" style="zoom: 33%;" />
+
+<p style="text-align: center;">
+  &nbsp;&nbsp;透视投影vs正交投影
+</p></li>
+</ul>
+<h4 id="齐次坐标系"><a href="#齐次坐标系" class="headerlink" title="齐次坐标系"></a>齐次坐标系</h4><p>通过增加一个<strong>额外的维度（w分量）</strong>，来表示更低维度的空间。这样做的核心目的，是为了<strong>用同一种数学运算（矩阵乘法）来统一表示所有的几何变换（特别是平移）</strong>。</p>
+<h3 id="MVP变换如何工作？"><a href="#MVP变换如何工作？" class="headerlink" title="MVP变换如何工作？"></a>MVP变换如何工作？</h3><h4 id="1-模型变换"><a href="#1-模型变换" class="headerlink" title="1. 模型变换"></a>1. 模型变换</h4><p>通过<strong>缩放、旋转、平移</strong>三种几何变换，将物体转化到标准化的世界坐标系下。（注意，不同模型的<strong>模型变换矩阵</strong>实际上是其本身所持有的一种<strong>属性</strong>，而非由<strong>图形渲染管线</strong>所定义，即<strong>数据驱动</strong>的设计思路）</p>
+<pre><code class="cpp">//此处为GAMES101 proj1的模型变换函数参考示例
+Eigen::Matrix4f get_model_matrix(float rotation_angle)
+&#123;
+  Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
+  Eigen::Matrix4f rotate_Maxtrix;
+  float angle = rotation_angle * MY_PI / 180; //转化为角度
+  rotate_Maxtrix &lt;&lt;     											//定义模型变换矩阵（绕z轴旋转）
+    cos(angle), -sin(angle), 0, 0,
+    sin(angle), cos(angle), 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1;
+  model = rotate_Maxtrix * model;
+  return model;
+&#125;
+</code></pre>
+<h4 id="2-视图变换"><a href="#2-视图变换" class="headerlink" title="2. 视图变换"></a>2. 视图变换</h4><p>调整观测位置为<strong>（0，0，0）</strong>原点和**-z方向**</p>
+<pre><code class="c++">Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
+&#123;
+    Eigen::Matrix4f view = Eigen::Matrix4f::Identity();
+
+    Eigen::Matrix4f translate;
+    translate &lt;&lt; 1, 0, 0, -eye_pos[0],
+        0, 1, 0, -eye_pos[1],
+        0, 0, 1, -eye_pos[2],
+        0, 0, 0, 1;
+
+    view = translate * view;
+
+    return view;
+&#125;
+</code></pre>
+<h4 id="3-投影变换"><a href="#3-投影变换" class="headerlink" title="3. 投影变换"></a>3. 投影变换</h4><ul>
+<li>正交投影</li>
+</ul>
+<pre><code class="cpp">Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
+                                      float zNear, float zFar)
+&#123;
+  Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
+  Eigen::Matrix4f orthographic_maxtrix;   //正交矩阵
+
+  float angle = eye_fov * MY_PI / 180;   
+  float t = tan(angle / 2) * abs(zNear);  //top面
+  float b = -t;                           //bottom面	 
+  float r = t * aspect_ratio;             //right面
+  float l = -r;	                          //left面
+
+  orthographic_maxtrix &lt;&lt;                 //定义正交矩阵
+  2 / (r - l), 0, 0, -(r + l) / 2,
+  0, 2 / (t - b), 0, -(t + b) / 2,
+  0, 0, 2 / (zNear - zFar), -(zNear + zFar) / 2,
+  0, 0, 0, 1;
+
+  Eigen::Matrix4f temp_maxtrix;           //转化矩阵（把原先的投影矩阵转化为正交矩阵）
+  temp_maxtrix &lt;&lt; 
+    zNear, 0, 0, 0,
+  0, zNear, 0, 0,
+  0, 0, zNear + zFar, -zFar * zNear,
+  0, 0, 1, 0;
+
+  //注意，矩阵乘法是从右到左，即：投影矩阵= 正交矩阵*转化矩阵
+  projection = orthographic_maxtrix * temp_maxtrix * projection;
+  return projection;
+&#125;
+</code></pre>
+<img src="/images/GAMES101/gifs/proj1/透视投影旋转.gif" alt="透视投影旋转" style="zoom:50%;" />
+
+<p style="text-align: center;">
+  &nbsp;&nbsp;运用透视投影的三角形旋转
+</p>
+
+
+
+<img src="/images/GAMES101/gifs/proj1/正交投影旋转.gif" alt="正交投影旋转" style="zoom:50%;" />
+
+
+
+<p style="text-align: center;">
+  &nbsp;&nbsp;运用正交投影的三角形旋转
+</p>
+### MVP变换实现踩坑记录
+
+<p>如何实现绕任意轴和角度旋转——<strong>罗德里格斯旋转公式</strong> </p>
+<p><strong>R &#x3D; cos(θ) * I + (1 - cos(θ)) * (a * a^T) + sin(θ) * K</strong></p>
+<ul>
+<li><p><strong>R</strong> 是旋转矩阵</p>
+</li>
+<li><p><strong>I</strong> 是单位矩阵</p>
+</li>
+<li><p><strong>θ</strong> 是旋转角度</p>
+</li>
+<li><p><strong>K</strong> 是旋转轴的<strong>斜对称矩阵</strong></p>
+</li>
+</ul>
+<pre><code class="cpp">Eigen::Matrix4f get_rotation(Vector3f axis, float angle)
+&#123;
+    Eigen::Matrix3f idtntity_maxtrix = Eigen::Matrix3f::Identity();
+    // 构建斜对称矩阵 K，用于表示叉积运算
+    Eigen::Matrix3f temp_maxtrix;
+    temp_maxtrix &lt;&lt; 0, -axis.z(), axis.y(),
+        axis.z(), 0, -axis.x(),
+        -axis.y(), axis.x(), 0;
+  
+    // 应用罗德里格斯公式的三个组成部分
+  
+    Eigen::Matrix3f R =
+      cos(angle) * idtntity_maxtrix +  // cos(θ)I  —— “保持不动”的部分
+      (1 - cos(angle)) * axis * axis.transpose() + // (1-cos(θ))a*a^T  —— “投影到轴上”的部分
+      sin(angle) * temp_maxtrix;				//sin(θ) * K  —— “围绕轴旋转”的部分
+
+    Eigen::Matrix4f rotation_maxtrix = Eigen::Matrix4f::Identity();
+    rotation_maxtrix.block&lt;3, 3&gt;(0, 0) = R;//将R矩阵嵌入到rotation_maxtrix左上角
+    return rotation_maxtrix;
+&#125;
+</code></pre>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2024 - 2025 chu&#39;s Blog
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;楽酌
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src=""
+    data-repo="chu123122/blog"
+    data-repo-id=""
+    data-category="Announcements"
+    data-category-id=""
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled=""
+    data-emit-metadata=""
+    data-input-position=""
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+</body>
+</html>

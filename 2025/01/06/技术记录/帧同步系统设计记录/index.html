@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>帧同步系统设计记录 | chu&#39;s Blog</title>
+    <meta name="author" content="楽酌" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/%E5%A4%B4%E5%83%8F.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>CHU&#39;S BLOG</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;CHU&#39;S BLOG</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>帧同步系统设计记录</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/1/6
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                技术
+            </a>
+        </span>
+        
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h3 id="实现结果展示"><a href="#实现结果展示" class="headerlink" title="实现结果展示"></a>实现结果展示</h3><p><img src="/2025/01/06/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/%E5%B8%A7%E5%90%8C%E6%AD%A5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E8%AE%B0%E5%BD%95/.././../../../useful/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/Hexo/source/images/GAMES101/images/%E5%B8%A7%E5%90%8C%E6%AD%A5%E6%95%88%E6%9E%9C%E6%BC%94%E7%A4%BA-%E5%BC%80%E5%A7%8B-1760276366596-5.png"></p>
+<p>给予一个初始方向的力</p>
+<p><img src="/2025/01/06/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/%E5%B8%A7%E5%90%8C%E6%AD%A5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E8%AE%B0%E5%BD%95/.././../../../useful/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/Hexo/source/images/GAMES101/images/%E5%B8%A7%E5%90%8C%E6%AD%A5%E7%B3%BB%E7%BB%9F%E6%BC%94%E7%A4%BA%E6%95%88%E6%9E%9C-1760276368850-7.png"></p>
+<p>演示中多个客户端在给予初始球体一个碰撞后运行轨迹完全一致，同时世界哈希值（物体速度、位置、方向决定）计算值完全一致</p>
+<h3 id="帧同步的介绍"><a href="#帧同步的介绍" class="headerlink" title="帧同步的介绍"></a>帧同步的介绍</h3><p>对于网络多人游戏，如何在不可靠的网络上建立起一个共享一致的虚拟世界是一个重要的问题，主流的两种解决方案分别是：<strong>状态同步</strong>和<strong>帧同步</strong>。</p>
+<p>状态同步，个人的理解是：可以概括为<strong>结果同步</strong>。由服务端周期性地将游戏物体的状态数据发放给各个客户端，各客户端接收到数据后进行插值同步，常用于<strong>卡牌、策略、回合制</strong>等无需高精度的游戏。（服务端持有权威世界，客户端强制性同步）</p>
+<p>帧同步，我目前的理解是：<strong>确定性世界</strong>中的<strong>输入同步</strong>。在每一帧（或固定的时间步）中，所有玩家的<strong>输入操作</strong>被收集并广播给所有客户端，每个客户端再用完全一致的逻辑去<strong>本地计算游戏状态</strong>，从而保持整个游戏世界的一致性。常用于 <strong>RTS、格斗、MOBA</strong> 等操作频繁、需要精确一致的游戏。（服务端只持有输入历史，客户端各跑各的，所以确定性世界的构建无比重要，不过这种实现是很古早的版本了）</p>
+<p>之后收集相关文章时发现这一个<strong>帧同步中的输入同步</strong>中其实有很多地方可以细究，例如：客户端A推迟发送输入，先等服务器发送其他客户端的输入以此作弊怎么办？（称呼为lookahead cheats）输入同步如何处理网络波动和延迟？如何减少同步频率波度导致的影响？<br>·</p>
+<h3 id="帧同步系统的设计思路"><a href="#帧同步系统的设计思路" class="headerlink" title="帧同步系统的设计思路"></a>帧同步系统的设计思路</h3><h4 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h4><p>服务端将从客户端收集到的玩家输入进行分发给各个客户端，具体的单位执行逻辑由客户端本身持有，我们只进行一个输入驱动，在这种情况下，需要是一个<strong>极具确定性的系统</strong>才能够保证各个客户端运行出的结果一致。</p>
+<pre><code class="(空)">单个客户端进行本地输入采集，发送给服务端--&gt;
+
+服务端将收集到的各个输入封装后发送给所有客户端--&gt;
+
+客户端收集到服务端发送的指令集后，一一执行输入，模拟出结果。
+</code></pre>
+<h4 id="1-逻辑时钟的定义"><a href="#1-逻辑时钟的定义" class="headerlink" title="1.逻辑时钟的定义"></a>1.逻辑时钟的定义</h4><p>在构建帧同步系统时，我们遇到的第一个问题就是<strong>时间步长</strong>。unity中的<code>Update()</code>循环，其心跳<code>Time.deltaTime</code>取决于玩家的硬件性能和渲染负载，<em>完全不稳定、不可预测</em>。</p>
+<p>为此，我们在服务端和客户端引入了<strong>逻辑时钟</strong>的概念，通过一个<strong>accumulator（时间累加器）和固定的TIME_STEP</strong>，让时间累加器在主循环中不断积累，到达一定时间后进行一次逻辑更新，由此我们在服务端和客户端都建立起了一个<strong>确定性</strong>的逻辑循环。</p>
+<pre><code class="c#">//Unity中客户端逻辑时钟循环
+public void LogicUpdate()
+  &#123;
+      accumulator += Time.deltaTime;//时间累加器累计
+
+        while (accumulator &gt;= TIME_STEP)//当超过TIME_STEP时进行一次逻辑更新
+        &#123;
+            //....
+        &#125;	
+    //...
+    &#125;
+</code></pre>
+<pre><code class="cpp">//cpp中服务端逻辑时钟循环
+const float SERVER_TICK_RATE = 30.0f;
+const float TIME_STEP = 1.0f / SERVER_TICK_RATE; //即代表每秒30帧
+int main(void)
+&#123;
+  //...
+     while (true)
+    &#123;
+        // 时间管理计算
+        auto frameStartTime = std::chrono::high_resolution_clock::now();
+        std::time_t now_c = std::chrono::system_clock::to_time_t(frameStartTime);
+
+        std::chrono::duration&lt;float&gt; deltaTime_duration = frameStartTime - lastTime;
+        float deltaTime = deltaTime_duration.count();
+        lastTime = frameStartTime;
+
+        accumulator += deltaTime;
+        while (accumulator &gt; TIME_STEP)
+        &#123;
+          //...
+        &#125;
+     &#125;
+  //...
+&#125;
+</code></pre>
+<h4 id="2-客户端的双时钟模型"><a href="#2-客户端的双时钟模型" class="headerlink" title="2. 客户端的双时钟模型"></a>2. 客户端的双时钟模型</h4><p>对于单一的客户端和服务端来说，简单的逻辑时钟便已经足够。但是对于多客户端来说，却远远不够。我们无法做到<strong>让后续加入的客户端可以安全地重演历史逻辑</strong>。</p>
+<p>如何让一个‘活在过去’的新玩家，安全地追上‘现在’，并向‘未来’提交输入？为此，我们选择了<strong>双时钟模型</strong>。</p>
+<p><strong>输入帧</strong> (<code>currentInputFrame</code>)，每次步长积累足够后直接递进一次，会在客户端和服务端连接上时，和服务端当前逻辑帧进行同步；</p>
+<p><strong>逻辑帧</strong> (<code>currentLogicFrame</code>)，只有确定当前逻辑帧的指令集存在时才进行逻辑更新，同时逻辑帧+1，不会进行同步。</p>
+<p>输入帧和逻辑帧的分开设计，可以避免后加入客户端用户的输入干扰到重播的历史。同时，由于后加入客户端以及具备了所有的历史指令集，它在重播时逻辑帧和输入帧步进速度保持了一致，使得落后的客户端可以快速追上前面的客户端。（这里当时研究半天为什么逻辑帧会出现快进的情况）</p>
+<pre><code class="c#">public void LogicUpdate()
+&#123; 
+  accumulator += Time.deltaTime;
+
+  while (accumulator &gt;= TIME_STEP)
+  &#123;
+    //...
+    if(_clientManager.ServerCommandSetDic.Keys.
+           Contains(executeLogicFrame)) //检查执行帧的指令集是否到达
+    &#123;
+      //...
+      
+      currentLogicFrame += 1; //逻辑帧步进
+      _physicsManager.LogicUpdate();//物理逻辑更新
+      OnGameLogicUpdate?.Invoke();//逻辑更新
+    &#125;
+    //...
+    accumulator -= TIME_STEP;
+    currentInputFrame += 1;//输入帧步进
+  &#125;
+&#125;
+</code></pre>
+<h4 id="3-网络延迟处理"><a href="#3-网络延迟处理" class="headerlink" title="3.网络延迟处理"></a>3.网络延迟处理</h4><p>帧同步的核心在于<strong>锁步</strong>，我们需要等待所有客户端指令发出后才进行逻辑更新，但这也带来了一个问题：<strong>客户端需要及其频繁，每秒多少帧的输入，才可以填充服务端该帧的指令集</strong>。反之，则会出现服务端迟迟不发送该帧的指令集，客户端产生<em>死锁</em>。</p>
+<p>为了解决这个问题，我们在服务端引入了<strong>超时处理和空指令</strong>，对于任一逻辑帧的指令集来说，我们只在规定时间内收集，超时默认填充空指令进去。</p>
+<pre><code class="cpp">//....
+if (status == frameStatus::Collecting)//指令集还处在收集阶段
+&#123;
+  auto now = std::chrono::high_resolution_clock::now();
+  auto age = now - frame_data-&gt;creationTime;
+
+  // 收集完成
+  if (command_set.size() == client_count)
+  &#123;
+    status = frameStatus::Ready;
+  &#125;
+  // 超时填充默认指令
+  else if (age &gt; TIMEOUT_DURATION)
+  &#123;                     		 	 frame_sync_manager.full_null_command_in_frame_data(
+    *frame_data, 
+    client_count);
+    status = frameStatus::Ready;
+  &#125;
+&#125;
+//....
+</code></pre>
+<h4 id="4-确定性物理世界的构造"><a href="#4-确定性物理世界的构造" class="headerlink" title="4. 确定性物理世界的构造"></a>4. 确定性物理世界的构造</h4><p>在解决了时钟和网络的问题后，很快遇到了另一个问题。Unity本身<strong>物理引擎的黑箱</strong>和<strong>浮点数在不同硬件上的计算差异</strong>，我们无法计算出一样的结果在不同客户端上。</p>
+<p>为了解决这个问题，我们需要<strong>抛弃Unity的Rigidbody或Collider</strong>，构建一个自己的简单物体系统。（注，该处为了避免复杂的实现，同时我们所有客户端和服务端都运行在同一硬件下，所以我们仍然使用浮点数作为数据类型而非定点数）</p>
+<pre><code class="c#">  public void LogicUpdate()
+  &#123;
+    for (int i = 0; i &lt; _physicsObjects.Count; i++)
+    &#123;
+      PhysicsBase obj = _physicsObjects[i];
+      float velocityValue = Vector3.Magnitude(obj.currentVelocity);
+      if (velocityValue &lt; 0.1f)
+        obj.currentVelocity = Vector3.zero;
+      else
+        Debug.Log(velocityValue);
+      //-----------------------------------------------------
+      obj.currentVelocity *= 0.98f;//模仿摩擦力
+      obj.currentLogicPosition += obj.currentVelocity * GameClockManager.TIME_STEP;//逻辑位置更新
+                
+      //  墙壁碰撞检测与响应
+      //...
+                
+      // 对象间碰撞 (处理物体与物体之间的关系) 
+       for (int i = 0; i &lt; _physicsObjects.Count; i++)
+       &#123;
+         for (int j = i + 1; j &lt; _physicsObjects.Count; j++)
+         &#123;
+           var ballA = _physicsObjects[i];
+           var ballB = _physicsObjects[j];
+
+           float logicDistance = Vector3.Distance(ballA.currentLogicPosition, ballB.currentLogicPosition);
+           
+
+           if (ballA.name != ballB.name &amp;&amp;
+               logicDistance &lt; (ballA.ballRadius + ballB.ballRadius))
+           &#123;
+             Debug.Log($&quot;球体发生碰撞，&quot; +
+                       $&quot;球体A：&#123;ballA.gameObject.name&#125;,&quot; +
+                       $&quot;球体B：&#123;ballB.gameObject.name&#125;&quot;);
+             ResolveCollision(ballA, ballB);//我们假设完全弹性碰撞，速度交换
+           &#125;
+         &#125;
+       &#125;
+    &#125;
+  &#125;
+</code></pre>
+<p>我们这里采用的<strong>先移动再检测</strong>的模式，可能会导致<strong>隧道效应</strong>，为了解决这个问题，有两种思路，一种是<strong>子步模拟（Sub-stepping）</strong>，<strong>将一个大的逻辑时间步，分割成多次更小的迭代，在每一次迭代中都执行一次‘移动-检测’，从而以更高的时间频率来捕捉碰撞。</strong>（有点类似图形学中的超采样技术，提高采样率，自然提高了精度）</p>
+<p>另一种思路是像Unity的<strong>Continuous</strong>模式一样，采用‘连续碰撞检测’，通过计算物体运动的‘扫掠体’来预测碰撞。</p>
+<h4 id="5-渲染和逻辑的解耦和割裂"><a href="#5-渲染和逻辑的解耦和割裂" class="headerlink" title="5. 渲染和逻辑的解耦和割裂"></a>5. 渲染和逻辑的解耦和割裂</h4><p>由于帧同步的逻辑时钟，我们物体的<strong>实际逻辑位置</strong>和玩家<strong>看见的渲染位置</strong>实际是不一样的。也就是，<strong>在帧同步中，渲染永远落后于逻辑</strong>。我们需要让渲染针对逻辑插值，从而平滑表现。</p>
+<p>对于一个移动的单位来说，其逻辑位置是在逻辑帧中阶段性更新，如果只是简单的同步我们会得到一个类似瞬移+顿步的结果。（注意，该处卡顿的效果不是gif图帧率过低导致）</p>
+<p>对此我们简单地进行插值处理</p>
+<pre><code class="c#">  protected virtual void RenderUpdate()
+  &#123;
+    if (GameClockManager.Instance.IsReplayTime())
+    &#123;
+      smoothTime = 0.03f;//回放时由于逻辑更新加快，我们渲染速度也需要加快
+    &#125;
+    else
+    &#123;
+      smoothTime = 0.25f;
+    &#125;
+
+    transform.position = Vector3.SmoothDamp(
+      transform.position,
+      currentLogicPosition,
+      ref _velocity,
+      smoothTime);
+  &#125;
+</code></pre>
+<p>当前采用的<strong>”SmoothDamp“</strong>（外插值）方案，虽然实现了基本的平滑，但在网络抖动较大或高速追帧时，仍存在视觉上的追赶感和不稳定性，会产生凭空碰撞的现象。</p>
+<p>一个更健壮的工业级解决方案是采用<strong>”快照内插值“</strong>。让渲染逻辑固定地<strong>、延迟一个或多个逻辑帧</strong>，来播放两个‘已确认’的历史状态之间的动画，<strong>从而彻底将渲染表现与网络波动解耦</strong>，实现绝对的视觉平滑。这需要为每个同步对象，<strong>维护一个小的历史状态缓冲区。</strong></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>借助课程设计的机会完成了这份基础的<strong>确定性帧同步系统</strong>，主要困难还是在于实际实现中的各种问题以及对于socket函数的不熟悉，帧同步系统中还要许多地方没有弄明白，预测、回滚，仍然有待优化，不够之后再写可能就是很久之后了。</p>
+<p>主要实现了：<strong>双时钟模型、超时处理、确定性物理、渲染插值</strong>。意外之喜是，由于后加入的客户端<strong>每次逻辑更新中，由于回放历史满足，必然可以推进一步逻辑世界</strong>，从而实现了<strong>快进追帧功能</strong>。（这个导致当时研究半天为什么后加入客户端莫名其妙就是跑的快）</p>
+<p>需要注意的是，局限于课程设计，避免过于复杂，只是简单建立在浮点数的基础上，没有实现定点数，<strong>本系统的确定性只能建立在同一设备上</strong>。以及<strong>输入延迟</strong>只是简单的进行初步缓冲，并没有建立缓冲池。</p>
+<p>另外，借助帧同步的这份指令集系统，其实可以很好的实现一份<strong>指令回放系统</strong>（以前实现过一份指令回放系统，可以说基本上一模一样），回放系统可谓是帧同步的一份副产物了。</p>
+<hr>
+<h3 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h3><p>和课程老师讨论时问到了许多我没有仔细思考过的地方。</p>
+<p>Q1：帧同步具体解决的不确定性问题的细节</p>
+<p>A1：底层API（动画、物理、数学库）调用的黑盒，导致的细微差异；</p>
+<p>数据结构内部算法在不同电脑、不同版本上都无法保存一致。（eg：<strong>哈希表 (std::unordered_map, Dictionary&lt;,&gt;):</strong> 它的迭代顺序，取决于哈希算法的实现和内部冲突解决的策略。）</p>
+<p>现代编译器优化性能的不确定性，不同CPU对于指令的性能优化的操作可能导致不一样的结果（因为对于浮点数运算中**(a + b) + c可能不等于a + (b + c)！**）</p>
+<p>Q2：帧同步的同步具体在哪里？对于每次广播的大量空的指令集，我是不是可以省略掉呢？以及它的确定性如何表现出的？</p>
+<p>A2：帧同步的核心点在于<strong>过程同步</strong>。我们为了简化逻辑，做了一个大胆的假设：只要我保证所有人的<strong>输入（原因）一致</strong>，那么他们的<strong>结果必然一致</strong>。因此服务端无需同步那个复杂、庞大的结果了。</p>
+<p>对于<strong>状态同步</strong>来说，<strong>唯一权威的是服务端</strong>，允许接受不同客户端运算结果一致的情况，在遵守服务端权威的架构下，即便有小的差异也会在下一次数据包到达时被强制拉回。</p>
+<p>而帧同步下，唯一权威的是<strong>所有客户端共享的初始状态和指令序列表</strong>，服务端完全信任客户端计算出来的结果，在这个模型下<strong>没有任何纠错机制</strong>。</p>
+<p>因此<strong>确定性是帧同步架构的唯一地基！</strong></p>
+<hr>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>最近阅读到了网易雷火大佬的几篇技术文章，感觉收获颇多，借此梳理一下自己实现的系统和业界之间的标准化的差异。	同时强烈推荐<a target="_blank" rel="noopener" href="https://www.zhihu.com/people/chang-xiao-qi-86">Jerish - 知乎</a>大佬的几篇文章！</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/130702310">细谈网络同步在游戏历史中的发展变化（上） - 知乎</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/164686867">细谈网络同步在游戏历史中的发展变化（中） - 知乎</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/336869551">细谈网络同步在游戏历史中的发展变化（下） - 知乎</a></p>
+<h4 id="帧同步发展"><a href="#帧同步发展" class="headerlink" title="帧同步发展"></a>帧同步发展</h4><ul>
+<li><strong>早期的Lockstep</strong>——“确定性锁步同步（Deterministic Lockstep）”</li>
+<li><strong>Bucket Synchronization</strong>—— “乐观帧锁定”</li>
+<li><strong>锁步同步协议 Lockstep protocol</strong>—— 用于解决外挂的一种协议（具体略）</li>
+<li><strong>RTS中的Lockstep</strong> —— 操作延迟和可变步长</li>
+<li><strong>Pipelined Lockstep protocol</strong>——指令流水线（不会与其他玩家发送通途冲突的行为直接执行）</li>
+<li><strong>Time Warp</strong>——时间快照引入（世界快照）</li>
+</ul>
+<h4 id="状态同步发展"><a href="#状态同步发展" class="headerlink" title="状态同步发展"></a>状态同步发展</h4><ul>
+<li><p><strong>快照同步</strong> —— 由客户端输入计算服务端世界状态，发送快照给所有客户端</p>
+</li>
+<li><p><strong>客户端预测和回滚</strong>——  本地先执行。 本地预执行记录时间戳放在一个BUFFER里，回滚时进行事件列表回溯，重新执行一遍</p>
+</li>
+<li><p>**事件锁定与时钟同步 **——基于事件队列严格按序执行</p>
+</li>
+<li><p><strong>延迟补偿</strong> —— 服务端计算结果时暂时回溯客户端单位位置进行计算，从而弥补网络延迟导致的位置偏差（注意是否应用对于不同游戏类型也不一样）</p>
+</li>
+<li><p><strong>Trailing state synchronization</strong>—— 在TimeWarp的基础上减少了快照存储。（详细可以去看 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/164686867">细谈网络同步在游戏历史中的发展变化（中） - 知乎</a>）</p>
+<p><img src="/2025/01/06/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/%E5%B8%A7%E5%90%8C%E6%AD%A5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E8%AE%B0%E5%BD%95/.././../../../useful/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/Hexo/source/images/GAMES101/images/%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5%E5%AE%9A%E4%B9%89.png"></p>
+</li>
+</ul>
+<h4 id="物理同步"><a href="#物理同步" class="headerlink" title="物理同步"></a><strong>物理同步</strong></h4><p><strong>”在较为复杂的物理模拟环境或有物理引擎参与计算的游戏里，如何对持有物理状态信息的对象做网络同步”</strong></p>
+<p>主要问题：</p>
+<ul>
+<li><p>物理引擎的不确定性</p>
+<p><em>1.编译器优化后的指令顺序</em></p>
+<p><em>2.约束计算的顺序</em></p>
+<p><em>3.不同版本、不同平台浮点数精度问题</em></p>
+</li>
+<li><p>在物理引擎参与模拟的条件下，网络同步的微小误差很容易被迅速放大</p>
+<p><em>（预测回滚牺牲了事件顺序的一致性从而换取到了主控端玩家的及时响应）</em></p>
+</li>
+</ul>
+<h4 id="常见同步优化技术"><a href="#常见同步优化技术" class="headerlink" title="常见同步优化技术"></a><strong>常见同步优化技术</strong></h4><ul>
+<li><p>表现优化</p>
+<p>a.插值优化</p>
+<p>b.客户端预先执行+回滚</p>
+</li>
+<li><p>延迟对抗</p>
+<p>a.延迟补偿</p>
+<p>b.命令缓冲区</p>
+</li>
+<li><p>丢包对抗</p>
+</li>
+<li><p>带宽优化</p>
+</li>
+<li><p>帧率优化</p>
+</li>
+</ul>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2024 - 2025 chu&#39;s Blog
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;楽酌
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src=""
+    data-repo="chu123122/blog"
+    data-repo-id=""
+    data-category="Announcements"
+    data-category-id=""
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled=""
+    data-emit-metadata=""
+    data-input-position=""
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+</body>
+</html>

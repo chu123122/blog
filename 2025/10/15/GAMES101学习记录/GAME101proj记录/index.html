@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>GAMES101 proj记录 | chu&#39;s Blog</title>
+    <meta name="author" content="楽酌" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/%E5%A4%B4%E5%83%8F.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>CHU&#39;S BLOG</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;CHU&#39;S BLOG</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>GAMES101 proj记录</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/10/15
+        </span>
+        
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h4 id="proj1-（MVP变化中的旋转矩阵和透视投影矩阵实现）"><a href="#proj1-（MVP变化中的旋转矩阵和透视投影矩阵实现）" class="headerlink" title="proj1 （MVP变化中的旋转矩阵和透视投影矩阵实现）"></a>proj1 （MVP变化中的旋转矩阵和透视投影矩阵实现）</h4><h4 id="proj2-（光栅化器的三角形栅格化算法和判定点是否在三角形内算法实现）"><a href="#proj2-（光栅化器的三角形栅格化算法和判定点是否在三角形内算法实现）" class="headerlink" title="proj2 （光栅化器的三角形栅格化算法和判定点是否在三角形内算法实现）"></a>proj2 （光栅化器的三角形栅格化算法和判定点是否在三角形内算法实现）</h4><p>画出两个遮挡的矩形？</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250701151709468.png" style="zoom: 33%;" />
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250701151939625.png" alt="image-20250701151939625" style="zoom: 50%;" />
+
+<p>判断一个点是否在三角形里面的返回值错误。浮点数应用在if语句中的判定规则是：</p>
+<ul>
+<li><p>如果浮点数是 0.0，它被当作 false。</p>
+</li>
+<li><p>如果浮点数是<strong>任何非零值</strong>（无论是正数还是负数），它都被当作 true。</p>
+<p>导致我很多有负有正的情况也被认为符合条件返回了true</p>
+</li>
+</ul>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250701184924328.png" alt="image-20250701152415102" style="zoom:33%;" />
+
+<p>完成。</p>
+<p>额外部分：应用MSAA超采样技术</p>
+<p>只是多画了几个一样的三角形？</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250701163544051.png" alt="image-20250701163544051" style="zoom:33%;" />
+
+<p>我错误理解了MSAA的实现（对于bounding box里面的的每一个像素，我都再进行细分为4个采样点，但是不做四次颜色运算，而是进行四次深度测试然后依据此数据将之前主像素计算出的颜色进行平均处理），</p>
+<p>当成了SSAA（对于bounding box里面的的每一个像素，我都再进行细分为4个采样点，进行检查是否在三角形里面，如果是就更新深度值，更加细致的检查，这样自然有效减少了锯齿。但是没考虑到其他点的buff值），实现还有问题导致深度缓冲失效了。</p>
+<p><strong>MSAA: Multi-sample Anti-aliasing (多重采样抗锯齿)</strong></p>
+<p> <strong>SSAA: Super-sampling Anti-aliasing (超采样抗锯齿)</strong></p>
+<p><strong>MSAA 和 SSAA 的核心区别：</strong></p>
+<ul>
+<li><strong>SSAA</strong>：对每个子像素都进行<strong>深度测试 + 着色</strong>。质量最高，成本也最高。</li>
+<li><strong>MSAA</strong>：对每个子像素都进行<strong>深度测试</strong>，但只进行一次<strong>着色</strong>。在边缘质量和性能之间取得了绝佳的平衡。</li>
+</ul>
+<p>MSAA也就是基于覆盖率进行颜色混合。</p>
+<p>实现，但是区别比较细微，没太看出来</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250701184924328.png" alt="image-20250701184924328" style="zoom:50%;" />
+
+
+
+<p>总结：</p>
+<p>正常的三角形栅格化算法是对于每个像素点进行：</p>
+<p>（1）确实该像素点是否在三角形内部</p>
+<p>（2）依据x，y坐标计算出自身在三角形内的重心坐标，然后依据三角形来算出z轴坐标</p>
+<p>（3）将z轴坐标与depth_buf数组内的对应进行比较，进行深度缓存</p>
+<p>（4）获取颜色，然后传入<code>set_pixel()</code>进行着色</p>
+<p>MSAA算法：</p>
+<p>（1）将该像素点进行超采样，proj2中进行了2x2采样</p>
+<p>（2）对于每个子像素点进行循环，确实是否在三角形内部，如果在进行上面第（2）（3）步，同时记录主像素点里有几个子像素点通过了深度测试（<code>coverage</code>），记录最小深度</p>
+<p>（3）遍历完子像素点后，将该主像素点的深度（<code>depth_buf</code>）取子像素点的最小深度，同时对颜色依据<code>coverage</code>进行平均。传入<code>set_pixel()</code>进行着色。</p>
+<blockquote>
+<p>注：MSAA算法第三步，<code>depth_buf</code>取子像素点的最小深度，仅为简单简化的软件MSAA，实际GPU的硬件MSAA每个子采样点都与<strong>自己专属的</strong>深度槽比较。</p>
+</blockquote>
+<h4 id="proj3"><a href="#proj3" class="headerlink" title="proj3"></a>proj3</h4><p>完成基本的栅格化函数后，渲染出来的物体与示例相反，倒过来了？</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250709210226024.png" alt="image-20250709210226024" style="zoom:33%;" />
+
+<p>添加了一个z轴翻转矩阵解决，查阅资料发现可能是代码框架的问题，待研究（<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/509902950">《GAMES101》作业框架问题详解 - 知乎</a>）</p>
+<p>在实现Bump mapping——凹凸贴图时发现奇怪的显示问题</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710150703731.png" alt="image-20250710150703731" style="zoom:33%;" />
+
+<p>询问ai后发现是注释中给予计算本地坐标系的公式存在问题</p>
+<p><code> Vector t = (x\*y/sqrt(x\*x+z\*z),sqrt(x\*x+z\*z),z\*y/sqrt(x\*x+z\*z))</code></p>
+<p>后使用<strong>“施密特正交化”</strong>思想，成功实现效果</p>
+<pre><code class="cpp"> Eigen::Vector3f up = Eigen::Vector3f(0.0f, 1.0f, 0.0f);//取任意不和n平行的辅助向量
+ Eigen::Vector3f t = up.cross(n).normalized();
+</code></pre>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710151034316.png" alt="image-20250710151034316" style="zoom:33%;" />
+
+<p>在实现位移贴图时，简单的移动，错误。移动的地方错误，我应该移动的是顶点着色器里面的顶点？而不是片元着色器里面的片元，因为这些片元是虚拟的？</p>
+<pre><code class="c++"> auto h = [&amp;](float u, float v) -&gt; float
+    &#123;
+        Vector3f color = payload.texture-&gt;getColor(u, v);
+        return (color.x() + color.y() + color.z()) / 3.0f;
+    &#125;;
+    float u = payload.tex_coords.x();
+    float v = payload.tex_coords.y();
+
+    point.x() += h(u, v); //同时移动方式也错误，应该沿着表面的法线方向移动，而不是直接添加
+    point.y() += h(u, v);
+    point.z() += h(u, v);
+</code></pre>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710160621608.png" alt="image-20250710160621608" style="zoom:33%;" />
+
+<p>研究后发现实现的好像不是真正的位移贴图而是一种视差映射？但是目前还是失败，效果不一致</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710161745788.png" alt="image-20250710161745788" style="zoom:33%;" />
+
+<p>对比其他人的代码后发现是高度函数h出现问题。<br>原因：</p>
+<p><strong>凹凸贴图 (Bump Mapping)</strong> 的核心，不是关心一个点的<strong>绝对高度</strong>是多少，而是关心它和<strong>旁边点的高度差</strong>是多少，也就是**坡度 (Gradient)**。</p>
+<p><strong>位移贴图 (或我们实现的视差映射)</strong> 极度依赖<strong>绝对高度值</strong>。而这种平均法来说，不同鲜艳程度的颜色获得的平均值可以是一样的<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710164427440.png" alt="image-20250710164427440" style="zoom: 50%;" />，而<code>norm（）</code><img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710164506302.png" alt="image-20250710164506302" style="zoom:50%;" /></p>
+<pre><code class="c++">    auto h = [&amp;](float u, float v) -&gt; float
+    &#123;
+        Vector3f color = payload.texture-&gt;getColor(u, v);
+       // return (color.x() + color.y() + color.z()) / 3.0f; 原本使用，凹凸贴图没有问题，但是位移贴图会发生问题
+          return color.norm();//其他人使用方案，替换后正确
+    &#125;;
+</code></pre>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710163751473.png" alt="image-20250710163751473" style="zoom:33%;" />
+
+<p>双线性插值实现问题</p>
+<p>丢失部分颜色，获取采样点附近四点判断出现问题，需要确认是否是左手系和右手系差异的影响</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710204920788.png" alt="image-20250710204920788" style="zoom:33%;" />
+
+<hr>
+<p>normal shader完成</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710140045017.png" alt="image-20250710140045017" style="zoom:33%;" />
+
+<p>Blinn-phong shader完成</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710135938469.png" alt="image-20250710135938469" style="zoom: 33%;" />
+
+<p>Texture shader完成</p>
+<img src="C:\Users\chu\AppData\Roaming\Typora\typora-user-images\image-20250710141422058.png" alt="image-20250710141422058" style="zoom:33%;" />
+
+<p>Bump Mapping shader完成</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710141422058.png" alt="image-20250710151104836" style="zoom:33%;" />
+
+<p>Displacement Mapping shader 完成</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250710164551012.png" alt="image-20250710164551012" style="zoom:33%;" />
+
+<p>双线性插值完成</p>
+<p>虽然我没看出有多大区别</p>
+<h4 id="proj4（贝塞尔曲线实现的de-Casteljau算法及反走样）"><a href="#proj4（贝塞尔曲线实现的de-Casteljau算法及反走样）" class="headerlink" title="proj4（贝塞尔曲线实现的de Casteljau算法及反走样）"></a>proj4（贝塞尔曲线实现的de Casteljau算法及反走样）</h4><img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250719192140107.png" alt="image-20250719192140107" style="zoom:33%;" />
+
+<h4 id="proj5-从视点对像素的光线生成，Moller-Trumbore算法"><a href="#proj5-从视点对像素的光线生成，Moller-Trumbore算法" class="headerlink" title="proj5(从视点对像素的光线生成，Moller-Trumbore算法)"></a>proj5(从视点对像素的光线生成，Moller-Trumbore算法)</h4><p>颜色纯黑，没有纹理和颜色</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250724201356390.png" alt="image-20250724201356390" style="zoom:33%;" />
+
+<p>添加对<code>if (tnear &lt; 0)return false;</code>距离为负的情况的退出解决。</p>
+<h4 id="proj6（包围盒求交，BVH查找，SVH查找）"><a href="#proj6（包围盒求交，BVH查找，SVH查找）" class="headerlink" title="proj6（包围盒求交，BVH查找，SVH查找）"></a>proj6（包围盒求交，BVH查找，SVH查找）</h4><p>通过<code> Vector3f pMin, pMax;</code>便足以定义一个Bound3，即包围盒</p>
+<p>BHV查找实现，完美</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250729162147127.png" alt="image-20250729162147127" style="zoom:33%;" />
+
+<p>BVH和SVH实现差异</p>
+<p>BVH时间花费</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250801155150206.png"/>
+
+<p>SAH时间花费</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250801201925681.png"/>
+
+<h3 id="proj7（路径追踪算法，多线程实现，Microfacet材质实现）"><a href="#proj7（路径追踪算法，多线程实现，Microfacet材质实现）" class="headerlink" title="proj7（路径追踪算法，多线程实现，Microfacet材质实现）"></a>proj7（路径追踪算法，多线程实现，Microfacet材质实现）</h3><p>噪点和黑色条纹过多，pdf中提到：</p>
+<p>注意数值精度问题，尤其注意pdf 接近零的情况，以及sampleLight 时判断 光线是否被挡的边界情况。这些情况往往会造成渲染结果噪点过多，或出现 黑色横向条纹。</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250810135130535.png" alt="image-20250810135130535" style="zoom: 33%;" />
+
+<p>Q:在直接光中pdf的值&#x3D;1&#x2F;Area，在间接光中pdf&#x3D;1&#x2F;2pi。这两个在数学意义上是准确无误的，无偏性的啊，pi和Area也是定值无法改变？</p>
+<p>A:pdf的全称是概率密度函数，是蒙特卡洛积分的一个因子，这个问题的出现是理论上的无偏性和实际中方差的问题导致。<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250810135535804.png"/></p>
+<p>对于这种情况我们可以采用<em><strong>钳位</strong></em>的做法（pdf&#x3D;max（pdf，常量））</p>
+<p>但这种做法实际上增大了那些罕见情况的贡献，它引入了<strong>偏见 (Bias)<strong>。人为地、强制地提高了罕见事件的概率（pdf变大了），从而系统性地、错误地降低了它的贡献（贡献 &#x2F; pdf 变小了）。这会导致最终的渲染结果</strong>整体偏暗</strong>，因为它压制了那些虽然罕见但合法的光路贡献。</p>
+<p>更好的方法是<em><strong>检查一致性</strong></em>：<strong>一个事件的发生概率 (pdf) 极低，通常意味着这个事件本身的贡献也应该极低。</strong> 如果两者不匹配，说明我们的采样策略或场景有问题，但如果我们能保证一致性，就可以安全地处理。</p>
+<p>通过将概率过低的罕见情况进行抛弃，我们通过丢弃这些贡献和概率认为都应该忽略不计的样本，对最终结果的影响远小于钳位带来的系统性变暗。</p>
+<p>Q：sampleLight内部也没什么检查光线是否被挡的边界情况啊，pdf里面讲的是什么意思？</p>
+<p>A：不是指sampleLight函数内部，而是后面的。我<strong>利用采样点和随机获取的光源点进行阴影光线构建，之后进行遮挡检测时</strong>。</p>
+<p><strong>假设你的着色点 p，恰好就位于一个漫反射物体的表面，而这个物体又与一个发光物体重叠或紧紧贴在一起。</strong></p>
+<p><code>Scene::intersect</code> 函数很可能会认为，这条光线<strong>立刻就击中了它自己所在的那个物体</strong>！它会返回一个<code> shadow_hit</code>，其中<code>shadow_hit.distance</code>是一个<strong>极小极小的正数（几乎为0）</strong>。</p>
+<p>遮挡判断代码，会发现阴影光线“被挡住了”，然后错误地认为点 p 无法接收到来自 x’ 的光。这会导致：</p>
+<ul>
+<li>在物体与光源接触的边缘，出现不自然的<strong>黑色条纹或斑点</strong>。</li>
+<li>如果一个物体本身就是光源，它在计算直接光照时，可能会认为自己被自己“遮挡”了，导致光源表面出现<strong>黑色噪点（光照痤疮 Light Acne）</strong>。</li>
+</ul>
+<p>为了解决这个问题，<strong>我们可以在构建阴影光线时将光线起点沿着表面法线往外推一小段距离</strong></p>
+<p>也就是<code>ray_origin = p.coords + p.normal \* EPSILON;</code>EPSILON是一个非常小的正数</p>
+<p>按上面两个调整后，渲染出来的图片全黑？</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250810195834929.png" alt="image-20250810195834929" style="zoom:33%;" />
+
+<p>ASH实现问题！(现在不确定了，又能运行了？)</p>
+<p>重新写一遍发现编译通过但是运行会报错</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250812174049620.png"/>
+
+<p><code>  Intersection shade_point = Scene::intersect(ray); // 渲染点</code></p>
+<p>渲染点没有加上发生检测</p>
+<p>Q：一直有黑色条纹问题，考虑过了pdf和sampleLight采样问题后还是存在着。</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250812200527709.png" alt="image-20250812200527709" style="zoom:33%;" />
+
+<p>A：直接光影响判断遮挡情况时，没有留下浮点数的浮动范围，导致出现问题。</p>
+<pre><code class="cpp">//错误实现
+bool has_occlusion = shadow_point.happened &amp;&amp;
+                         dis_to_light &gt; shadow_point.distance &amp;&amp;
+                         shadow_point.distance &gt; EPSILON;
+    // shadow_point.distance &lt; dis_to_light - 1e-3;
+    if (!has_occlusion &amp;&amp; pdf &gt; EPSILON)
+    &#123;
+        L_dir = light_point.emit * m_p-&gt;eval(wi, wo, n_p) *
+                dotProduct(n_p, wi) * dotProduct(n_x, -wi) / pow(dis_to_light, 2) / pdf;
+    &#125;
+---------------------------------------------------------------------------------------
+//正确版本(has_occlusion改动了)
+    bool has_occlusion = shadow_point.happened &amp;&amp;
+                         dis_to_light - 1e-3 &gt; shadow_point.distance &amp;&amp;
+                         shadow_point.distance &gt; EPSILON;
+    // shadow_point.distance &lt; dis_to_light - 1e-3;
+    if (!has_occlusion &amp;&amp; pdf &gt; EPSILON)
+    &#123;
+        L_dir = light_point.emit * m_p-&gt;eval(wi, wo, n_p) *
+                dotProduct(n_p, wi) * dotProduct(n_x, -wi) / pow(dis_to_light, 2) / pdf;
+    &#125;
+</code></pre>
+<p>正确实现</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250812200224814.png" alt="image-20250812200224814" style="zoom:33%;" />
+
+<h3 id="proj8-质点弹簧系统模拟，半隐式欧拉法-显式欧拉法-显式-Verlet"><a href="#proj8-质点弹簧系统模拟，半隐式欧拉法-显式欧拉法-显式-Verlet" class="headerlink" title="proj8 (质点弹簧系统模拟，半隐式欧拉法, 显式欧拉法,显式 Verlet)"></a>proj8 (质点弹簧系统模拟，半隐式欧拉法, 显式欧拉法,显式 Verlet)</h3><p>完成显式欧拉，半隐式欧拉，Verlet积分，PBD，全局阻尼</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250820142651704.png" alt="image-20250820142651704" style="zoom: 33%;" />
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2024 - 2025 chu&#39;s Blog
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;楽酌
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src=""
+    data-repo="chu123122/blog"
+    data-repo-id=""
+    data-category="Announcements"
+    data-category-id=""
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled=""
+    data-emit-metadata=""
+    data-input-position=""
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+</body>
+</html>
