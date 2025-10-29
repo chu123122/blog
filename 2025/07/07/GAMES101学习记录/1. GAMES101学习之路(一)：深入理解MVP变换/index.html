@@ -293,9 +293,8 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 <p style="text-align: center;">
   &nbsp;&nbsp;运用正交投影的三角形旋转
 </p>
-### MVP变换实现踩坑记录
 
-<p>如何实现绕任意轴和角度旋转——<strong>罗德里格斯旋转公式</strong> </p>
+<h3 id="MVP变换实现踩坑记录"><a href="#MVP变换实现踩坑记录" class="headerlink" title="MVP变换实现踩坑记录"></a>MVP变换实现踩坑记录</h3><p>如何实现绕任意轴和角度旋转——<strong>罗德里格斯旋转公式</strong> </p>
 <p><strong>R &#x3D; cos(θ) * I + (1 - cos(θ)) * (a * a^T) + sin(θ) * K</strong></p>
 <ul>
 <li><p><strong>R</strong> 是旋转矩阵</p>
