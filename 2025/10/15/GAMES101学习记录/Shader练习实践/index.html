@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Shader练习实践 | chu&#39;s Blog</title>
+    <title>图形学练习实践 | chu&#39;s Blog</title>
     <meta name="author" content="楽酌" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -156,7 +156,7 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>Shader练习实践</h1>
+        <h1>图形学练习实践</h1>
     </div>
     <div class="info">
         <span class="date">
@@ -179,31 +179,66 @@
     </div>
     
     <div class="content" v-pre>
-        <h3 id="1-坐标与颜色：-在ShaderToy中，将屏幕颜色从左到右映射为红色通道，从下到上映射为绿色通道。"><a href="#1-坐标与颜色：-在ShaderToy中，将屏幕颜色从左到右映射为红色通道，从下到上映射为绿色通道。" class="headerlink" title="1.坐标与颜色： 在ShaderToy中，将屏幕颜色从左到右映射为红色通道，从下到上映射为绿色通道。"></a>1.<strong>坐标与颜色：</strong> 在ShaderToy中，将屏幕颜色从左到右映射为红色通道，从下到上映射为绿色通道。</h3><img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E7%AE%80%E6%98%93%E5%8F%98%E8%89%B2.png" alt="image-20250716200753530" style="zoom:50%;" />
+        <p><strong>程序化波浪：</strong></p>
+<p>通过在顶点着色器中，使用<code>sin()</code>函数和时间变量，对顶点的Y轴位置进行程序化偏移实现。	</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E6%B3%A2%E6%B5%AA%E6%95%88%E6%9E%9C.gif" style="zoom:33%;" />
 
-<h3 id="2-形状与动画：-画一个圆，并利用iTime变量让它的半径随时间变化，实现“呼吸”效果。"><a href="#2-形状与动画：-画一个圆，并利用iTime变量让它的半径随时间变化，实现“呼吸”效果。" class="headerlink" title="2. 形状与动画： 画一个圆，并利用iTime变量让它的半径随时间变化，实现“呼吸”效果。"></a>2. <strong>形状与动画：</strong> 画一个圆，并利用iTime变量让它的半径随时间变化，实现“呼吸”效果。</h3><img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E5%91%BC%E5%90%B8%E6%95%88%E6%9E%9C%E5%9C%86.gif" alt="呼吸效果圆" style="zoom:50%;" />
+<pre><code class="HLSL">//顶点着色器里面进行扰动
+float3 x_offset = sin(_Time.y * _Frequency) * _Amplitude;
+float3 y_offset = sin(_Time.y * _Frequency + IN.positionOS.x * _WaveLength) * _Amplitude;
 
-<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E5%B9%B3%E6%BB%91%E5%91%BC%E5%90%B8%E6%95%88%E6%9E%9C%E5%9C%86.gif" alt="平滑呼吸效果圆" style="zoom:50%;" />
+float3 modifiedPositionOS = IN.positionOS.xyz;
+modifiedPositionOS.x += x_offset;
+modifiedPositionOS.y += y_offset;
+</code></pre>
+<hr>
+<p><strong>溶解特效：</strong></p>
+<p>通过采样噪声纹理，并以时间为变量，动态控制<code>clip()</code>函数的阈值达成。</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E6%BA%B6%E8%A7%A3%E6%95%88%E6%9E%9C.gif" style="zoom:33%;" />
 
-<h3 id="3-任务：-从零开始，在Unity中手写一个能完整实现Proj3核心功能的Shader。"><a href="#3-任务：-从零开始，在Unity中手写一个能完整实现Proj3核心功能的Shader。" class="headerlink" title="3. 任务： 从零开始，在Unity中手写一个能完整实现Proj3核心功能的Shader。"></a>3. <strong>任务：</strong> 从零开始，在Unity中手写一个能完整实现Proj3核心功能的Shader。</h3><ul>
-<li>Blinn-Phong模型实现</li>
-</ul>
-<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250717203049390.png" alt="image-20250717203049390" style="zoom: 50%;" />
+<pre><code>//噪声贴图
+half noiseValue = SAMPLE_TEXTURE2D(_NoiseMap, sampler_NoiseMap, parallax_uv).r;
+half threshold = frac(_Time.y * _DissolveThreshold); // 用时间驱动
+clip(noiseValue - threshold);
+</code></pre>
+<hr>
+<p><strong>护盾效果：</strong></p>
+<p>基于<strong>菲涅尔反射公式</strong>、<strong>法线扰动贴图</strong>、<strong>时间参数偏差</strong>，实现能量护盾效果</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E8%83%BD%E9%87%8F%E6%8A%A4%E7%9B%BE%E6%95%88%E6%9E%9C.gif" style="zoom:33%;" />
 
-<ul>
-<li><p>法线贴图实现</p>
-<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250718132822375.png" alt="image-20250718132822375" style="zoom: 33%;" />
-</li>
-<li><p>视差偏移实现</p>
-</li>
-</ul>
-<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250718132822375.png" alt="image-20250718132842906" style="zoom:33%;" />
+<pre><code class="HLSL">//纹理流动效果
+float2 scroll_offset = _ScrollSpeed.xy * _Time.y;
+float2 final_uv = parallax_uv+ scroll_offset;
+ //纹理贴图
+half4 albedo = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, final_uv);
+</code></pre>
+<hr>
+<p><strong>软件光栅化器：</strong></p>
+<p>基于 <strong>GAMES101</strong> 教学内容独立实现。<br> 包括三角形扫描、深度测试（Z-Buffer）、透视纹理映射、光照插值等基础功能。</p>
+<p>代码：<a target="_blank" rel="noopener" href="https://github.com/chu123122/GAMES101/tree/main/Assignment3/Code">GAMES101&#x2F;Assignment3&#x2F;Code at main · chu123122&#x2F;GAMES101</a></p>
+<img src="./../../useful/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/Hexo/source/images/GAMES101/images/image-20250710141422058-1760499186876-4-1761645176789-1.png" style="zoom:33%;" />
 
-<h3 id="4-顶点动画（波浪效果）"><a href="#4-顶点动画（波浪效果）" class="headerlink" title="4. 顶点动画（波浪效果）"></a>4. 顶点动画（波浪效果）</h3><img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E6%B3%A2%E6%B5%AA%E6%95%88%E6%9E%9C.gif" alt="波浪效果" style="zoom:33%;" />
+<p><strong>Blinn-Phong复刻</strong>：</p>
+<p>在Unity中用HLSL绕过内置管线，手动实现了Blinn-Phong光照模型，包括漫反射、高光和环境光和纹理贴图、法线贴图和视差贴图。</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250717203049390.png" style="zoom:50%;" />
 
-<h3 id="5-溶解特效"><a href="#5-溶解特效" class="headerlink" title="5. 溶解特效"></a>5. 溶解特效</h3><img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E6%BA%B6%E8%A7%A3%E6%95%88%E6%9E%9C.gif" alt="溶解效果" style="zoom:33%;" />
+<p>左（视差贴图+法线贴图） 右（无光照）</p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20251028171315315.png" style="zoom:50%;" />
 
-<h3 id="6-任务：-实现一个半透明、边缘发光、有动态纹理流动的能量护盾。"><a href="#6-任务：-实现一个半透明、边缘发光、有动态纹理流动的能量护盾。" class="headerlink" title="6. 任务： 实现一个半透明、边缘发光、有动态纹理流动的能量护盾。"></a>6. <strong>任务：</strong> 实现一个半透明、边缘发光、有动态纹理流动的能量护盾。</h3><img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/%E8%83%BD%E9%87%8F%E6%8A%A4%E7%9B%BE%E6%95%88%E6%9E%9C.gif" alt="能量护盾效果" style="zoom:33%;" />
+<pre><code class="HLSL">  //环境光计算
+  half3 ambient = SampleSH(normalWS);
+  //漫反射光计算
+  half3 diffuse = energy * saturate( dot(normalWS, light_direction));
+  //高光计算
+  half3 specular = energy * pow(saturate(dot(normalWS, h)), _Shininess);
+
+half3 finalColor = (ambient + diffuse) * baseMapColor.rgb + specular;
+</code></pre>
+<hr>
+<p><strong>多线程路径追踪：</strong></p>
+<p>基于蒙特卡洛积分方法的路径追踪渲染器， 实现了漫反射、镜面反射、全局光照与软阴影。<br> 使用 <code>std::thread</code> 进行分块并行渲染以加速计算。</p>
+<p>代码：<a target="_blank" rel="noopener" href="https://github.com/chu123122/GAMES101/tree/main/PA7.1">GAMES101&#x2F;PA7.1 at main · chu123122&#x2F;GAMES101</a></p>
+<img src="https://cdn.jsdelivr.net/gh/chu123122/Image-hosting-service/img/image-20250812200224814.png" style="zoom:50%;" />
     </div>
     
     
