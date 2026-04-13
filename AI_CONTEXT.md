@@ -1,6 +1,6 @@
 # AI 上下文：chu's Blog
 
-> **自动生成** by `generate_project_context.py` | 更新时间：2026-04-13 19:21
+> **自动生成** by `generate_project_context.py` | 更新时间：2026-04-13 19:58
 > **用途**：AI 助手打开此项目时，先读这个文件获取完整上下文
 > **重新生成**：`python ~/.claude/skills-repo/_bootstrap/scripts/generate_project_context.py "C:\Users\chuxgao\WorkBuddy\20260413111416\blog"`
 
@@ -301,12 +301,13 @@ blog/
 
 | 任务 | 状态 |
 |------|------|
-| .github/workflows/deploy.yml | ✅ 已创建 |
+| .github/workflows/deploy.yml | ✅ 已创建（触发分支：main + redesign-astro） |
 | .gitignore 配置 | ✅ |
-| 创建 astro 分支 | ⏳ |
-| 推送到 GitHub | ⏳ |
-| astro build 成功 | ⏳ |
-| GitHub Actions 自动部署 | ⏳ |
+| 推送到 GitHub（redesign-astro 分支） | ✅ commit 16c5169 |
+| astro build 成功（20 页，2.32s） | ✅ |
+| 修复 2 处断裂图片路径 | ✅ |
+| GitHub Actions build job | ✅ 通过 |
+| GitHub Actions deploy job | ⏳ 需先启用 GitHub Pages（Settings → Pages → Source: GitHub Actions） |
 | 线上 https://chu123122.github.io/blog 验证 | ⏳ |
 
 ---
@@ -315,9 +316,13 @@ blog/
 
 | # | 问题 | 状态 |
 |---|------|------|
-| 1 | `astro build` dist 为空（旧 dev server 锁 dist 目录） | 需杀 node 后重建 |
-| 2 | dev 模式 base=`/` vs build 模式 base=`/blog` | 已修复（process.argv 判断） |
-| 3 | posts collection 为空时的 warning | 正常（已有 15 篇文章后消失） |
+| 1 | `astro build` dist 为空（旧 dev server 锁 dist 目录） | ✅ 已解决（杀 node + 清缓存） |
+| 2 | dev 模式 base=`/` vs build 模式 base=`/blog` | ✅ 已修复（process.argv 判断） |
+| 3 | posts collection 为空时的 warning | ✅ 正常（16 篇文章已填充） |
+| 4 | games101-projects.md 中 Typora 本地图片路径 | ✅ 已替换为 CDN URL |
+| 5 | shader-practice.md 中 URL 编码的 Hexo 相对路径 | ✅ 已替换为 CDN URL |
+| 6 | node_modules/.astro/data-store.json 缓存旧路径 | ✅ 已清除 |
+| 7 | GitHub Pages 未启用 | ⏳ 需手动在 Settings → Pages 设为 GitHub Actions |
 
 </details>
 
@@ -707,6 +712,79 @@ Phase 2（视觉迭代）虽然耗时最长，但**绝对必要**。如果跳过
 *文档版本：v1.0 | 2026-04-13*
 
 </details>
+
+---
+
+## 🧠 相关知识上下文（自动匹配注入）
+
+> 以下 Topic 内容基于项目文档关键词自动匹配。详细内容见对应文件。
+
+### cpp_pitfalls
+> 文件：`~/.claude/global-memory/knowledge/knowledge_cpp_pitfalls.md`
+
+# C++ 常见陷阱
+## 智能指针
+- shared_ptr 循环引用 → 用 weak_ptr 打断
+- make_shared vs new：make_shared 一次分配（对象+控制块），new 两次
+- shared_ptr 线程安全：控制块的引用计数是原子的，但指向的对象不是
+## RAII
+## 模板
+## 移动语义
+- std::move 本身不移动，只做类型转换（左值→右值引用）
+- 移动后的对象处于"有效但未指定"状态
+## 其他
+... (截断，完整内容见 C:\Users\chuxgao\.claude\global-memory\knowledge\knowledge_cpp_pitfalls.md)
+
+### ue_internals
+> 文件：`~/.claude/global-memory/knowledge/knowledge_ue_internals.md`
+
+# UE 引擎底层
+> 源码阅读笔记 + 实习经验 + InsideUE4 学习
+## 源码阅读记录
+（随 InsideUE4 学习进度更新）
+## 实习中学到的
+- Pak 加载：上万 Pak 卡死 → 拓扑图 + 多线程调度解决
+- 模块依赖：三级权限管理
+- 资源管线：双轨隔离 + 路径软加载
+- Git 工具链：减少 43% 耗时
+## 线程模型
+- GameThread / RenderThread / RHI Thread 三线程
+- TaskGraph 基于 DAG 的任务调度
+（待深入学习）
+## UObject 系统
+... (截断，完整内容见 C:\Users\chuxgao\.claude\global-memory\knowledge\knowledge_ue_internals.md)
+
+### unity_dots
+> 文件：`~/.claude/global-memory/knowledge/knowledge_unity_dots.md`
+
+# Unity DOTS/ECS 架构经验
+## 核心概念（已掌握）
+- Archetype → Chunk(16KB) → SOA 布局
+- Burst 编译器原理（消除托管对象/装箱 + SIMD 向量化）
+- 四维性能分析（D-Cache/I-Cache/SIMD/多线程）
+## 项目实践
+- PBD 物理求解器 + Flow Field + Boids
+- 200+ 单位碰撞避障，逻辑帧 0.2ms
+- 空间哈希 Broad Phase，Gauss-Seidel 迭代
+## 面试话术
+（参见 interview_question_bank.md）
+
+### system_design
+> 文件：`~/.claude/global-memory/knowledge/knowledge_system_design.md`
+
+# 系统设计表达方法论
+## 四步法
+1. **拆模块**：系统由哪些核心模块组成
+2. **定数据**：每个模块管理什么数据，数据格式是什么
+3. **画交互**：模块之间怎么通信（调用/事件/消息队列）
+4. **走流程**：用一个具体场景走一遍完整流程
+## 表达要点
+- 先给全景图，再逐层深入
+- 每层用一句话概括，面试官决定是否追问
+- 主动提及 trade-off（"选 A 不选 B 因为..."）
+## 练习记录
+## 常见系统设计题
+... (截断，完整内容见 C:\Users\chuxgao\.claude\global-memory\knowledge\knowledge_system_design.md)
 
 ---
 

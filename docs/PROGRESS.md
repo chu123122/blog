@@ -62,12 +62,13 @@
 
 | 任务 | 状态 |
 |------|------|
-| .github/workflows/deploy.yml | ✅ 已创建 |
+| .github/workflows/deploy.yml | ✅ 已创建（触发分支：main + redesign-astro） |
 | .gitignore 配置 | ✅ |
-| 创建 astro 分支 | ⏳ |
-| 推送到 GitHub | ⏳ |
-| astro build 成功 | ⏳ |
-| GitHub Actions 自动部署 | ⏳ |
+| 推送到 GitHub（redesign-astro 分支） | ✅ commit 16c5169 |
+| astro build 成功（20 页，2.32s） | ✅ |
+| 修复 2 处断裂图片路径 | ✅ |
+| GitHub Actions build job | ✅ 通过 |
+| GitHub Actions deploy job | ⏳ 需先启用 GitHub Pages（Settings → Pages → Source: GitHub Actions） |
 | 线上 https://chu123122.github.io/blog 验证 | ⏳ |
 
 ---
@@ -76,6 +77,10 @@
 
 | # | 问题 | 状态 |
 |---|------|------|
-| 1 | `astro build` dist 为空（旧 dev server 锁 dist 目录） | 需杀 node 后重建 |
-| 2 | dev 模式 base=`/` vs build 模式 base=`/blog` | 已修复（process.argv 判断） |
-| 3 | posts collection 为空时的 warning | 正常（已有 15 篇文章后消失） |
+| 1 | `astro build` dist 为空（旧 dev server 锁 dist 目录） | ✅ 已解决（杀 node + 清缓存） |
+| 2 | dev 模式 base=`/` vs build 模式 base=`/blog` | ✅ 已修复（process.argv 判断） |
+| 3 | posts collection 为空时的 warning | ✅ 正常（16 篇文章已填充） |
+| 4 | games101-projects.md 中 Typora 本地图片路径 | ✅ 已替换为 CDN URL |
+| 5 | shader-practice.md 中 URL 编码的 Hexo 相对路径 | ✅ 已替换为 CDN URL |
+| 6 | node_modules/.astro/data-store.json 缓存旧路径 | ✅ 已清除 |
+| 7 | GitHub Pages 未启用 | ⏳ 需手动在 Settings → Pages 设为 GitHub Actions |
