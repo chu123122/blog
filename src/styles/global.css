@@ -152,6 +152,11 @@ img {
   padding: 0 2rem;
 }
 
+/* 列表页加宽 */
+.page-wrap--wide {
+  max-width: 960px;
+}
+
 /* ---------- 导航栏 ---------- */
 .navbar {
   display: flex;
@@ -599,7 +604,8 @@ img {
   max-height: calc(100vh - 4rem);
   overflow-y: auto;
   font-size: 0.82rem;
-  padding: 1rem 0;
+  padding: 1rem 0 1rem 1rem;
+  border-left: 1px solid var(--border);
 }
 
 .toc__title {
@@ -612,15 +618,13 @@ img {
 
 .toc a {
   display: block;
-  padding: 0.3em 0 0.3em 0.75em;
+  padding: 0.3em 0;
   color: var(--text-faint);
-  border-left: 1px solid var(--border);
   transition: all 0.2s;
 }
 
 .toc a:hover {
   color: var(--accent);
-  border-left-color: var(--accent);
 }
 
 .toc a[data-depth="3"] {
@@ -632,7 +636,7 @@ img {
 .post-layout {
   display: grid;
   grid-template-columns: 1fr 200px;
-  gap: 2.5rem;
+  gap: 3.5rem;
   align-items: start;
 }
 

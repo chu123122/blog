@@ -4,9 +4,10 @@ import "../styles/global.css";
 export interface Props {
   title?: string;
   description?: string;
+  wide?: boolean;
 }
 
-const { title = "chu's Blog", description = "简单记录下学习过程中的笔记" } = Astro.props;
+const { title = "chu's Blog", description = "简单记录下学习过程中的笔记", wide = false } = Astro.props;
 const currentPath = Astro.url.pathname;
 const base = import.meta.env.BASE_URL;
 ---
@@ -38,7 +39,7 @@ const base = import.meta.env.BASE_URL;
     <div class="vertical-deco">春の花びらが風に散る　——　楽酌の記録</div>
 
     <!-- 页面容器 -->
-    <div class="page-wrap">
+    <div class={`page-wrap${wide ? ' page-wrap--wide' : ''}`}>
       <!-- 导航栏 -->
       <nav class="navbar">
         <a class="navbar__logo" href={base}>楽酌</a>
