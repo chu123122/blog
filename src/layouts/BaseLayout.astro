@@ -59,6 +59,26 @@ const base = import.meta.env.BASE_URL;
 
       <!-- 页脚 -->
       <footer class="footer">
+        <!-- 音乐播放器 -->
+        <div class="footer__player" id="footer-player">
+          <div class="footer__player-wave" id="player-wave">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="footer__player-meta">
+            <span class="footer__player-track" id="player-track">暂无音乐</span>
+            <span class="footer__player-time" id="player-time"></span>
+          </div>
+          <div class="footer__player-controls">
+            <button class="footer__player-btn" id="player-prev" title="上一曲">‹</button>
+            <button class="footer__player-btn footer__player-btn--main" id="player-toggle" title="播放">▷</button>
+            <button class="footer__player-btn" id="player-next" title="下一曲">›</button>
+          </div>
+          <div class="footer__player-bar" id="player-bar" title="点击跳转">
+            <div class="footer__player-fill" id="player-fill"></div>
+          </div>
+          <audio id="bg-audio" preload="none"></audio>
+        </div>
+
         <p class="footer__text">&copy; 2024 — 2026 楽酌</p>
         <p class="footer__ghost">すべての言葉は、いつか誰かに届く</p>
       </footer>
@@ -99,6 +119,109 @@ const base = import.meta.env.BASE_URL;
           links.classList.toggle("open");
         });
       }
+    </script>
+
+    <!-- 音乐播放器 -->
+    <script>
+      // ================================================
+      // 🎵 歌单配置 — 在这里添加你的音乐
+      // src: 音频文件放到 public/music/ 目录下，填写 /music/文件名.mp3
+      //      也可以填写完整的外链 URL
+      // ================================================
+      const PLAYLIST: { title: string; src: string }[] = [
+        { title: "だから僕は音楽を辞めた · ヨルシカ", src: "/music/yorushika-dakara.mp3" },
+        // 继续加歌：把 mp3 放到 public/music/ 目录，照这个格式填就行
+      ];
+      // ================================================
+
+      const audio = document.getElementById("bg-audio") as HTMLAudioElement | null;
+      const trackEl = document.getElementById("player-track");
+      const timeEl = document.getElementById("player-time");
+      const toggleBtn = document.getElementById("player-toggle");
+      const prevBtn = document.getElementById("player-prev");
+      const nextBtn = document.getElementById("player-next");
+      const fill = document.getElementById("player-fill");
+      const bar = document.getElementById("player-bar");
+      const wave = document.getElementById("player-wave");
+      const playerEl = document.getElementById("footer-player");
+
+      let idx = 0;
+      let playing = false;
+
+      function fmt(s: number) {
+        const m = Math.floor(s / 60);
+        const sec = String(Math.floor(s % 60)).padStart(2, "0");
+        return `${m}:${sec}`;
+      }
+
+      function loadTrack(i: number) {
+        if (!PLAYLIST.length || !audio) return;
+        audio.src = PLAYLIST[i].src;
+        if (trackEl) trackEl.textContent = PLAYLIST[i].title;
+        if (fill) fill.style.width = "0%";
+        if (timeEl) timeEl.textContent = "";
+      }
+
+      function setPlaying(state: boolean) {
+        playing = state;
+        if (toggleBtn) toggleBtn.textContent = state ? "⏸" : "▷";
+        if (toggleBtn) toggleBtn.title = state ? "暂停" : "播放";
+        if (wave) wave.classList.toggle("playing", state);
+      }
+
+      function doPlay() {
+        audio?.play().then(() => setPlaying(true)).catch(() => {});
+      }
+
+      function doPause() {
+        audio?.pause();
+        setPlaying(false);
+      }
+
+      // 歌单为空时隐藏播放器
+      if (!PLAYLIST.length) {
+        if (playerEl) playerEl.style.display = "none";
+      } else {
+        // 只有一首歌时隐藏切换按钮
+        if (PLAYLIST.length === 1) {
+          if (prevBtn) (prevBtn as HTMLElement).style.display = "none";
+          if (nextBtn) (nextBtn as HTMLElement).style.display = "none";
+        }
+        loadTrack(0);
+      }
+
+      toggleBtn?.addEventListener("click", () => { playing ? doPause() : doPlay(); });
+
+      prevBtn?.addEventListener("click", () => {
+        idx = (idx - 1 + PLAYLIST.length) % PLAYLIST.length;
+        loadTrack(idx);
+        if (playing) doPlay();
+      });
+
+      nextBtn?.addEventListener("click", () => {
+        idx = (idx + 1) % PLAYLIST.length;
+        loadTrack(idx);
+        if (playing) doPlay();
+      });
+
+      audio?.addEventListener("timeupdate", () => {
+        if (!audio.duration) return;
+        const pct = (audio.currentTime / audio.duration) * 100;
+        if (fill) fill.style.width = pct + "%";
+        if (timeEl) timeEl.textContent = `${fmt(audio.currentTime)} / ${fmt(audio.duration)}`;
+      });
+
+      audio?.addEventListener("ended", () => {
+        idx = (idx + 1) % PLAYLIST.length;
+        loadTrack(idx);
+        doPlay();
+      });
+
+      bar?.addEventListener("click", (e) => {
+        if (!audio?.duration) return;
+        const rect = bar.getBoundingClientRect();
+        audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+      });
     </script>
   </body>
 </html>

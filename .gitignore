@@ -9,3 +9,8 @@ migrate.mjs
 
 # WorkBuddy 本地配置
 .workbuddy/
+
+# 音乐文件（本地保留，不入库）
+public/music/*.mp3
+public/music/*.flac
+public/music/*.ogg
