@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+build-out.txt
+build-err.txt
+build-log.txt
+visual-demo-*.html
+migrate.mjs
+
+# WorkBuddy 本地配置
+.workbuddy/

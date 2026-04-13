@@ -1,0 +1,78 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+
+const skills = [
+  { name: "C++", icon: "fa-solid fa-code" },
+  { name: "C#", icon: "fa-solid fa-code" },
+  { name: "Lua", icon: "fa-solid fa-moon" },
+  { name: "Unreal Engine", icon: "fa-solid fa-gamepad" },
+  { name: "Unity DOTS/ECS", icon: "fa-solid fa-cubes" },
+  { name: "计算机图形学", icon: "fa-solid fa-palette" },
+  { name: "帧同步/网络", icon: "fa-solid fa-network-wired" },
+  { name: "数据结构与算法", icon: "fa-solid fa-sitemap" },
+];
+
+const projects = [
+  {
+    name: "帧同步系统 v2",
+    desc: "基于 C++ & C# 的确定性帧同步框架，支持回滚预测和可靠 UDP",
+    link: "https://github.com/chu123122/LockStepSystem",
+  },
+];
+---
+
+<BaseLayout title="关于 — chu's Blog">
+  <section class="hero hero--left" style="padding: 5rem 0 3rem;">
+    <div class="hero__tag">楽酌について</div>
+    <h1 class="hero__title" style="font-size: 2rem;">楽酌</h1>
+    <p class="hero__desc">
+      游戏客户端 / 引擎开发<br/>
+      专注 UE / Unity DOTS / 图形学 / 网络同步
+    </p>
+    <div style="margin-top: 1rem;">
+      <a href="https://github.com/chu123122" target="_blank" rel="noopener" style="color: var(--text-faint); font-size: 1.2rem;">
+        <i class="fa-brands fa-github"></i>
+      </a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 技能 -->
+  <section class="about-section">
+    <h2 class="section-title">技能</h2>
+    <div class="skill-tags">
+      {skills.map((s) => (
+        <span class="tag" style="padding: 0.3rem 0.8rem; display: inline-flex; align-items: center; gap: 0.4rem;">
+          <i class={s.icon} style="font-size: 0.75rem;"></i>
+          {s.name}
+        </span>
+      ))}
+    </div>
+  </section>
+
+  <!-- 项目 -->
+  <section class="about-section">
+    <h2 class="section-title">项目</h2>
+    {projects.map((p) => (
+      <a href={p.link} target="_blank" rel="noopener" class="about-card" style="display: block; text-decoration: none; color: inherit;">
+        <h3 style="font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem;">{p.name}</h3>
+        <p style="font-size: 0.88rem; color: var(--text-mid); line-height: 1.7;">{p.desc}</p>
+      </a>
+    ))}
+  </section>
+
+  <!-- 关于博客 -->
+  <section class="about-section">
+    <h2 class="section-title">关于这个博客</h2>
+    <div class="about-card">
+      <p style="color: var(--text-mid); line-height: 1.9; font-size: 0.92rem;">
+        这里是我学习过程中的笔记记录，涵盖游戏开发、引擎技术、计算机图形学等方向。
+        博客使用 <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> 构建，
+        部署在 GitHub Pages 上。
+      </p>
+    </div>
+  </section>
+</BaseLayout>

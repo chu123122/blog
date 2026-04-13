@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+const base = import.meta.env.BASE_URL;
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+---
+
+<BaseLayout title={`${post.data.title} — chu's Blog`} description={post.data.description}>
+  <article style="margin-top: 4rem;">
+    <!-- 文章头 -->
+    <header class="post-header">
+      <span class="tag">{post.data.category}</span>
+      {post.data.tags.map((t: string) => <span class="tag">{t}</span>)}
+      <h1 class="post-header__title">{post.data.title}</h1>
+      <div class="post-header__meta">
+        <span>{formatDate(post.data.date)}</span>
+        <span>楽酌</span>
+      </div>
+    </header>
+
+    <div class="post-layout">
+      <!-- 正文 -->
+      <div class="prose">
+        <Content />
+      </div>
+
+      <!-- 右侧目录 -->
+      {headings.length > 0 && (
+        <aside class="toc">
+          <div class="toc__title">目录</div>
+          {headings
+            .filter((h) => h.depth <= 3)
+            .map((h) => (
+              <a href={`#${h.slug}`} data-depth={String(h.depth)}>
+                {h.text}
+              </a>
+            ))}
+        </aside>
+      )}
+    </div>
+  </article>
+
+  <!-- 返回 -->
+  <div style="margin-top: 3rem; text-align: center;">
+    <a href={`${base}posts/`} class="tag" style="font-size: 0.82rem; padding: 0.4rem 1.2rem;">
+      ← 返回文章列表
+    </a>
+  </div>
+</BaseLayout>

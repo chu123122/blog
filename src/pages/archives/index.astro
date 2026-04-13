@@ -1,0 +1,51 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const base = import.meta.env.BASE_URL;
+const allPosts = await getCollection("posts");
+const posts = allPosts
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const grouped: Record<string, typeof posts> = {};
+for (const post of posts) {
+  const year = post.data.date.getFullYear().toString();
+  if (!grouped[year]) grouped[year] = [];
+  grouped[year].push(post);
+}
+const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString("zh-CN", { month: "long", day: "numeric" });
+}
+---
+
+<BaseLayout title="归档 — chu's Blog">
+  <section class="hero hero--left" style="padding: 5rem 0 3rem;">
+    <div class="hero__tag">アーカイブ</div>
+    <h1 class="section-title" style="font-size: 1.8rem; margin-bottom: 0;">
+      归档
+      <span style="font-size: 0.85rem; font-weight: 400; color: var(--text-faint); margin-left: 0.5rem;">
+        共 {posts.length} 篇
+      </span>
+    </h1>
+  </section>
+
+  {years.map((year) => (
+    <section class="archive-year">
+      <h2 class="archive-year__title">{year}</h2>
+      <ul class="archive-list">
+        {grouped[year].map((post) => (
+          <li class="archive-item">
+            <span class="archive-item__date">{formatDate(post.data.date)}</span>
+            <a href={`${base}posts/${post.id}/`} class="archive-item__title">
+              {post.data.title}
+            </a>
+            <span class="archive-item__cat">{post.data.category}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</BaseLayout>

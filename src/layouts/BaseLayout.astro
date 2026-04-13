@@ -1,0 +1,104 @@
+---
+import "../styles/global.css";
+
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = "chu's Blog", description = "简单记录下学习过程中的笔记" } = Astro.props;
+const currentPath = Astro.url.pathname;
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" href={`${base}images/%E5%A4%B4%E5%83%8F.jpg`} />
+    <link rel="preconnect" href="https://fonts.googleapis.cn" />
+    <link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.cn/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Zen+Old+Mincho:wght@400;700&family=Shippori+Mincho:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- 花瓣层 -->
+    <div class="petal-layer" id="petal-layer"></div>
+
+    <!-- 竖排装饰 -->
+    <div class="vertical-deco">春の花びらが風に散る　——　楽酌の記録</div>
+
+    <!-- 页面容器 -->
+    <div class="page-wrap">
+      <!-- 导航栏 -->
+      <nav class="navbar">
+        <a class="navbar__logo" href={base}>楽酌</a>
+        <button class="navbar__toggle" id="menu-toggle" aria-label="菜单">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="navbar__links" id="nav-links">
+          <a href={base} class={currentPath === base || currentPath === base.slice(0,-1) ? "active" : ""}>文章</a>
+          <a href={`${base}archives/`} class={currentPath.includes("archives") ? "active" : ""}>归档</a>
+          <a href={`${base}about/`} class={currentPath.includes("about") ? "active" : ""}>关于</a>
+        </div>
+      </nav>
+
+      <!-- 主内容 -->
+      <main class="animate-fade-up">
+        <slot />
+      </main>
+
+      <!-- 页脚 -->
+      <footer class="footer">
+        <p class="footer__text">&copy; 2024 — 2026 楽酌</p>
+        <p class="footer__ghost">すべての言葉は、いつか誰かに届く</p>
+      </footer>
+    </div>
+
+    <!-- 花瓣生成 -->
+    <script>
+      (function () {
+        const container = document.getElementById("petal-layer");
+        if (!container) return;
+        const colors = [
+          "rgba(244,217,208,0.35)",
+          "rgba(232,160,144,0.22)",
+          "rgba(196,123,107,0.18)",
+          "rgba(200,185,175,0.18)",
+        ];
+        for (let i = 0; i < 12; i++) {
+          const p = document.createElement("div");
+          p.className = "petal";
+          p.style.left = 3 + Math.random() * 94 + "%";
+          p.style.background = colors[i % 4];
+          const s = 6 + Math.random() * 10;
+          p.style.width = s + "px";
+          p.style.height = s * 1.3 + "px";
+          p.style.animationDuration = 13 + Math.random() * 13 + "s";
+          p.style.animationDelay = -Math.random() * 20 + "s";
+          container.appendChild(p);
+        }
+      })();
+    </script>
+
+    <!-- 移动端菜单 -->
+    <script>
+      const toggle = document.getElementById("menu-toggle");
+      const links = document.getElementById("nav-links");
+      if (toggle && links) {
+        toggle.addEventListener("click", () => {
+          links.classList.toggle("open");
+        });
+      }
+    </script>
+  </body>
+</html>

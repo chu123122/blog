@@ -1,0 +1,70 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const base = import.meta.env.BASE_URL;
+const allPosts = await getCollection("posts");
+const recentPosts = allPosts
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 6);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit" }).replace(/\//g, ".");
+}
+
+function barClass(category: string) {
+  const cat = category.toLowerCase();
+  if (cat.includes("图形") || cat.includes("graphics")) return "post-bar--graphics";
+  if (cat.includes("技术") || cat.includes("tech")) return "post-bar--tech";
+  if (cat.includes("游戏") || cat.includes("game")) return "post-bar--game";
+  return "post-bar--default";
+}
+---
+
+<BaseLayout title="chu's Blog" description="楽酌的技术博客 — 游戏开发、图形学、引擎技术学习记录">
+
+  <!-- Hero -->
+  <section class="hero hero--left">
+    <div class="hero__tag">楽酌の記録帳</div>
+    <h1 class="hero__title">简单记录下<br/>学习过程中的事情</h1>
+    <p class="hero__desc">
+      游戏开发 · 引擎技术 · 图形学<br/>
+      像是写给未来自己的一封封信。
+    </p>
+    <span class="hero__whisper">世界の終わりで、花びらが舞う</span>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 最新文章 -->
+  <div class="section-label">最近の記事</div>
+  <h2 class="section-title">最新文章</h2>
+
+  <div>
+    {recentPosts.map((post) => (
+      <a href={`${base}posts/${post.id}/`} class="post-list-item">
+        <span class={`post-bar ${barClass(post.data.category)}`}></span>
+        <span class="post-date">{formatDate(post.data.date)}</span>
+        <span class="post-name">{post.data.title}</span>
+        <span class="post-cat">{post.data.category}</span>
+      </a>
+    ))}
+  </div>
+
+  <!-- 引言 -->
+  <div class="inline-quote">
+    <p class="inline-quote__text">
+      不存在十全十美的文章，<br/>如同不存在彻头彻尾的绝望。
+    </p>
+    <div class="inline-quote__from">—— 村上春樹</div>
+  </div>
+
+  <!-- 查看全部 -->
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <a href={`${base}posts/`} class="tag" style="font-size: 0.82rem; padding: 0.4rem 1.2rem;">
+      查看全部文章 →
+    </a>
+  </div>
+
+</BaseLayout>

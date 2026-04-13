@@ -1,0 +1,88 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const base = import.meta.env.BASE_URL;
+const allPosts = await getCollection("posts");
+const posts = allPosts
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const categories = [...new Set(posts.map((p) => p.data.category))];
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit" }).replace(/\//g, ".");
+}
+
+function barClass(category: string) {
+  const cat = category.toLowerCase();
+  if (cat.includes("图形") || cat.includes("graphics")) return "post-bar--graphics";
+  if (cat.includes("技术") || cat.includes("tech")) return "post-bar--tech";
+  if (cat.includes("游戏") || cat.includes("game")) return "post-bar--game";
+  return "post-bar--default";
+}
+---
+
+<BaseLayout title="全部文章 — chu's Blog">
+  <section class="hero hero--left" style="padding: 5rem 0 3rem;">
+    <div class="hero__tag">記事一覧</div>
+    <h1 class="section-title" style="font-size: 1.8rem; margin-bottom: 0;">全部文章</h1>
+  </section>
+
+  <!-- 分类筛选 -->
+  <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem;">
+    <button class="tag filter-btn active" data-cat="all">全部</button>
+    {categories.map((cat) => (
+      <button class="tag filter-btn" data-cat={cat}>{cat}</button>
+    ))}
+  </div>
+
+  <!-- 文章列表 -->
+  <div id="posts-list">
+    {posts.map((post) => (
+      <a
+        href={`${base}posts/${post.id}/`}
+        class="post-list-item"
+        data-category={post.data.category}
+      >
+        <span class={`post-bar ${barClass(post.data.category)}`}></span>
+        <span class="post-date">{formatDate(post.data.date)}</span>
+        <span class="post-name">{post.data.title}</span>
+        <span class="post-cat">{post.data.category}</span>
+      </a>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .filter-btn {
+    cursor: pointer;
+    background: transparent;
+    transition: all 180ms ease;
+  }
+  .filter-btn.active {
+    background: rgba(196, 123, 107, 0.1);
+    color: var(--accent);
+    border-color: var(--accent-pale);
+  }
+</style>
+
+<script>
+  const btns = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+  const items = document.querySelectorAll<HTMLAnchorElement>("#posts-list .post-list-item");
+
+  btns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      btns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const cat = btn.dataset.cat;
+      items.forEach((item) => {
+        if (cat === "all" || item.dataset.category === cat) {
+          (item as HTMLElement).style.display = "";
+        } else {
+          (item as HTMLElement).style.display = "none";
+        }
+      });
+    });
+  });
+</script>

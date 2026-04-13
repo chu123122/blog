@@ -1,19 +1,15 @@
-# 博客重设计 · AI 交接文档
+# chu's Blog · AI 交接文档
 
 > **最后更新**：2026-04-13
-> **当前状态**：Phase 1 未开始（SPEC 已完成，项目未初始化）
-> **分支**：`redesign-astro`
+> **当前状态**：Phase 4 完成（15 篇文章已迁移），Phase 5 构建部署进行中
+> **分支**：`astro`
 > **仓库**：https://github.com/chu123122/blog.git
 
 ---
 
 ## 📋 30 秒速读
 
-用户要把个人技术博客从 **Hexo 7.3.0** 迁移到 **Astro**，日式二次元视觉风格，部署在 GitHub Pages。15 篇旧文章全部迁移。
-
-**当前进度**：设计规格（SPEC）已完成，Astro 项目尚未初始化（因为当前环境缺少 Node.js）。
-
-**你要做的**：从 Phase 1 开始执行。
+博客从 Hexo 迁移到 Astro 6。视觉风格「花と嵐」已确定并落地——暖白底色、飘落花瓣、日系文学感。15 篇旧文章已迁移为 MD。GitHub Actions 部署配置已写好。当前卡在构建阶段（dist 被旧进程锁住），需要杀掉 node 后重新 build + push。
 
 ---
 
@@ -21,153 +17,109 @@
 
 | 决策 | 内容 | 原因 |
 |------|------|------|
-| 技术栈 | **Astro** | 静态博客最佳选择，零 JS 默认，Markdown 原生支持 |
-| 视觉风格 | **日式/二次元 + 深色基调** | 用户明确选择，匹配现有素材 |
-| 配色 | 深蓝 `#0a1628` → 蓝紫 `#1a2744` → 暖橙 `#e8956a` | 来自用户现有的"鲸落地"封面图 |
-| 效果 | 毛玻璃卡片、星空/海洋渐变、柔和过渡 | SPEC 中定义 |
-| 部署 | GitHub Pages | 用户选择，免费，现有方式 |
-| 内容迁移 | 全部 15 篇文章 | 用户明确要求 |
-| 代码高亮 | Shiki（Astro 内置） | 不需要额外配置 |
+| 技术栈 | Astro 6 + MDX + GitHub Pages | 静态博客最佳方案，用户已确认 |
+| 视觉风格 | 花と嵐（A+A2 融合） | 经过 10+ 套 demo 对比后确认 |
+| 底色 | `#faf8f5` 暖白 | 用户明确不要纯黑 |
+| 字体 | Shippori Mincho / Noto Serif SC / Zen Old Mincho / Noto Sans SC | 日系文学感 |
+| 花瓣 | 12 片，不透明度 18%~35%，自然可见 | 用户喜欢 A 方案的花瓣程度 |
+| 分类色条 | 图形=赤 `#c47b6b` / 技术=蓝 `#7b9bb5` / 游戏=绿 `#8baa7d` | A2 方案确认 |
+| 隐藏细节 | 竖排日文、hero 小字、footer 彩蛋，hover 渐显 | 用户核心审美："克制但不寡淡，细节暗藏在缝隙里" |
+| base 路径 | dev 时 `/`，build 时 `/blog` | 自动切换，astro.config.mjs 中 process.argv 判断 |
+| 部署 | GitHub Actions → gh-pages | deploy.yml 已写好 |
 
 ---
 
 ## 📂 仓库现状
 
 ```
-blog/                          ← 当前是 Hexo 静态输出
+blog/
+├── astro.config.mjs           ← Astro 配置（base 自动切换）
+├── package.json
+├── tsconfig.json
+├── .gitignore
+├── .github/workflows/
+│   └── deploy.yml             ← GitHub Actions 部署
 ├── docs/
-│   ├── SPEC.md                ← ★ 完整设计规格，必读
-│   └── HANDOFF.md             ← 本文件
-├── index.html                 ← Hexo 生成的首页
-├── css/main.css               ← Hexo 主题样式
-├── images/                    ← ★ 素材目录（头像、封面图）
-│   ├── 鲸落地.png             ← 主背景图
-│   ├── avatar.jpg             ← 二次元头像
-│   ├── 心灯探梦.jpg
-│   ├── 守护甜心.jpg
-│   ├── 崩坠.jpg
-│   └── 无衔之尾.png
-├── 2024/... 和 2025/...       ← 15 篇旧文章（Hexo 生成的 HTML）
-└── (Astro 项目待创建)
+│   ├── SPEC.md                ← 验收契约
+│   ├── TECHNICAL_DESIGN.md    ← 技术参考文档（原 HARNESS.md）
+│   ├── PROGRESS.md            ← 实时进度表
+│   ├── HANDOFF.md             ← 本文件
+│   ├── HARNESS_REVIEW.md      ← Harness 10 问验证
+│   └── dev-log/
+│       └── phase1-3.md        ← Phase 1~3 开发记录
+├── src/
+│   ├── content.config.ts      ← Content Collection 定义
+│   ├── content/posts/         ← 15 篇迁移后的 MD 文章
+│   ├── layouts/
+│   │   └── BaseLayout.astro   ← 全局布局
+│   ├── pages/
+│   │   ├── index.astro        ← 首页
+│   │   ├── posts/             ← 文章列表 + 详情
+│   │   ├── archives/          ← 归档
+│   │   └── about/             ← 关于
+│   └── styles/
+│       └── global.css         ← 花と嵐设计系统
+└── public/images/             ← 静态图片
 ```
-
-### 15 篇文章清单
-
-旧文章是 Hexo 生成的 HTML，**不是 Markdown 源文件**。需要从 HTML 中提取内容转为 `.md`。
-
-文章按路径分布在 `2024/` 和 `2025/` 目录下，分类包括：
-- 游戏开发学习记录（DOTS/ECS、设计模式等）
-- CS 公开课学习记录
-- GAMES101 学习记录（光栅化、光追等）
-- 技术记录（数据结构等）
 
 ---
 
-## 🚀 执行计划
+## ✅ 已完成
 
-### Phase 1：项目初始化（从这里开始）
+- [x] Phase 1：Astro 项目初始化 + 配置
+- [x] Phase 2：视觉风格确认（10+ 套 demo → 花と嵐）
+- [x] Phase 3：CSS + Layout + 5 个页面组件
+- [x] Phase 4：15 篇旧文章 HTML→MD 迁移
 
-```bash
-# 1. 确保 Node.js >= 18
-node --version
+## 🚀 下一步（从这里开始）
 
-# 2. 在 blog 目录中初始化 Astro（选择空模板）
-cd blog
-npm create astro@latest . -- --template minimal --no-install --no-git
-npm install
+### 立即执行
 
-# 3. 安装必要依赖
-npm install @astrojs/mdx @astrojs/sitemap sharp
-```
-
-**注意**：初始化时不要覆盖 `docs/` 和 `images/` 目录。如果 Astro 初始化脚手架会冲突，先备份这两个目录。
-
-### Phase 2：全局样式 + 布局
-
-1. 创建 CSS 变量系统（配色方案见 SPEC）
-2. 创建 `BaseLayout.astro`（导航 + 页脚 + 背景）
-3. 背景使用 `鲸落地.png` 做固定背景 + 暗色叠加层
-4. 毛玻璃卡片效果：`backdrop-filter: blur(12px); background: rgba(26, 39, 68, 0.6)`
-5. 响应式断点：移动端 < 768px / 平板 768-1024px / 桌面 > 1024px
-
-### Phase 3：页面开发
-
-1. **首页**：Hero 区（头像+介绍+社交链接）+ 最新文章网格
-2. **文章列表页**：分类筛选 + 卡片网格（封面图+标题+摘要+日期）
-3. **文章详情页**：Markdown 渲染 + 右侧目录 + 代码高亮
-4. **关于页**：个人介绍 + 技能标签 + 项目经历
-
-### Phase 4：文章迁移
-
-从 `2024/` 和 `2025/` 下的 HTML 文件中提取正文内容，转为 Astro content collection 的 `.md` 文件。每篇文章需要：
-
-```markdown
----
-title: "文章标题"
-date: 2024-XX-XX
-category: "分类"
-tags: ["标签1", "标签2"]
-cover: "/images/封面图.jpg"  # 如果有
-description: "摘要"
----
-
-正文内容...
-```
-
-### Phase 5：部署
-
-1. `astro.config.mjs` 设置 `site` 和 `base`
-2. 创建 `.github/workflows/deploy.yml`（GitHub Actions 自动部署）
-3. 仓库 Settings → Pages → Source: GitHub Actions
+1. 杀掉所有 node 进程：`Get-Process node | Stop-Process -Force`
+2. 清理缓存：`Remove-Item dist,.astro -Recurse -Force`
+3. 构建：`npx astro build`（需要 Node 22.12.0）
+4. 验证 dist 目录有 HTML 输出
+5. 创建 `astro` 分支：`git checkout -b astro`
+6. 推送：`git add -A && git commit -m "feat: astro blog with hanato-arashi theme" && git push -u origin astro`
+7. 在 GitHub 仓库设置中：Settings → Pages → Source 改为 GitHub Actions
+8. 验证 https://chu123122.github.io/blog
 
 ---
 
 ## ⚠️ 已知问题和注意事项
 
-1. **旧文章是 HTML 不是 Markdown** — 需要从 Hexo 生成的 HTML 中反向提取内容。如果用户能提供 Hexo 源文件（`source/_posts/*.md`），直接迁移会容易很多。**建议先问用户有没有 Hexo 的 Markdown 源文件。**
-
-2. **图片文件名含中文** — `鲸落地.png`、`心灯探梦.jpg` 等。在 Astro 中使用时注意 URL 编码，或者重命名为英文。
-
-3. **Node.js 环境** — 上一个 AI 尝试安装 Node 20.19.0 失败（权限问题）。确保当前环境有 Node >= 18。
-
-4. **Git 分支** — 所有改动在 `redesign-astro` 分支上。不要合并到 main，等用户确认满意后再合。
-
-5. **不要删除旧文件** — 在迁移完成并验证之前，保留所有 Hexo 生成的旧文件。
+1. **dist 锁定问题**：如果 `astro build` 后 dist 为空，是因为旧 dev server 进程锁住了目录。杀掉所有 node 进程后重试。
+2. **base 路径**：dev 模式下访问 `localhost:4321/`（无 /blog 前缀）；build/preview 访问 `localhost:4321/blog/`。astro.config.mjs 已自动处理。
+3. **字体加载**：使用 `fonts.googleapis.cn`（国内镜像），海外访问可能需要改为 `fonts.googleapis.com`。
 
 ---
 
-## 📐 设计规格
+## 🧑 用户画像
 
-完整设计规格见 **`docs/SPEC.md`**，包含：
-- 现状分析
-- 目标定义
-- 设计方向（配色、效果、布局）
-- 页面结构
-- 实现步骤
+- **技术背景**：游戏客户端/引擎开发（UE/Unity DOTS/图形学/网络同步）
+- **沟通偏好**：简洁、任务导向、中文、确认式反馈
+- **审美偏好**：ヨルシカ/n-buna/酸欠少女/鱼韵/村上春树/空洞骑士·泪城。克制但不寡淡，细节暗藏在缝隙里。**不要**纯黑、霓虹、张扬、过度极简。
+- **工作方法**：Harness 体系（SPEC→WORKFLOW→验证），项目必须有 docs/ 全套文档
 
 ---
 
-## 🧑 用户画像（帮你理解上下文）
+## 📐 相关文档
 
-- 游戏客户端/引擎开发者（C++/C#/Lua），不是前端开发者
-- 博客内容是技术学习记录（UE、Unity DOTS、图形学、帧同步等）
-- 偏好简洁直接的沟通，不要废话
-- 审美偏日式/二次元
-- 有完整的 AI 工作系统（双 Agent + Skill 体系），详见 skills-repo 的 SYSTEM_STATUS.md
+- `docs/SPEC.md` — 验收契约
+- `docs/TECHNICAL_DESIGN.md` — 技术参考（色彩/字体/组件/路由/部署）
+- `docs/PROGRESS.md` — 实时进度表
+- `docs/HARNESS_REVIEW.md` — Harness 10 问验证清单
+- `docs/dev-log/phase1-3.md` — Phase 1~3 开发记录
 
 ---
 
 ## ✅ 验收标准
 
-完成时需要满足：
-1. [ ] Astro 项目能 `npm run build` 无错误
-2. [ ] 15 篇旧文章全部可访问
-3. [ ] 首页、文章列表、文章详情、关于页 4 个页面完整
-4. [ ] 代码高亮正常工作
-5. [ ] 移动端响应式正常
-6. [ ] 深色主题 + 日式二次元风格
-7. [ ] GitHub Pages 部署成功
-8. [ ] Lighthouse Performance > 90
+1. [x] Astro 项目可正常 build，生成静态 HTML
+2. [x] 花と嵐视觉风格完整渲染（花瓣/暖白/衬线体/竖排装饰/隐藏细节）
+3. [x] 15 篇旧文章成功迁移为 MD 并可通过 Content Collection 读取
+4. [ ] GitHub Pages 部署成功，https://chu123122.github.io/blog 可访问
+5. [ ] 响应式在移动端正常工作
 
 ---
 
