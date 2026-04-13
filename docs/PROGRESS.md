@@ -14,7 +14,7 @@
 | 2 | 视觉风格确认（花と嵐） | ✅ 完成 | 2026-04-13 |
 | 3 | Astro 组件/页面落地 | ✅ 完成 | 2026-04-13 |
 | 4 | 旧文章迁移（HTML→MD） | ✅ 完成 | 2026-04-13 |
-| 5 | 构建 + 部署到 GitHub Pages | ⏳ 进行中 | — |
+| 5 | 构建 + 部署到 Cloudflare Pages | ⏳ 进行中 | — |
 
 ---
 
@@ -62,14 +62,14 @@
 
 | 任务 | 状态 |
 |------|------|
-| .github/workflows/deploy.yml | ✅ 已创建（触发分支：main + redesign-astro） |
+| .github/workflows/deploy.yml（CI 构建检查） | ✅ 已简化为 CI-only |
 | .gitignore 配置 | ✅ |
-| 推送到 GitHub（redesign-astro 分支） | ✅ commit 16c5169 |
+| 推送到 GitHub（redesign-astro 分支） | ✅ commit d2ff623 |
 | astro build 成功（20 页，2.32s） | ✅ |
 | 修复 2 处断裂图片路径 | ✅ |
-| GitHub Actions build job | ✅ 通过 |
-| GitHub Actions deploy job | ⏳ 需先启用 GitHub Pages（Settings → Pages → Source: GitHub Actions） |
-| 线上 https://chu123122.github.io/blog 验证 | ⏳ |
+| astro.config.mjs 切换到 Cloudflare Pages（去掉 /blog base） | ✅ |
+| Cloudflare Pages 项目配置（分支 → redesign-astro） | ⏳ 需确认 CF 绑定分支 |
+| 线上 https://blog-b9l.pages.dev 验证 | ⏳ |
 
 ---
 
@@ -78,9 +78,9 @@
 | # | 问题 | 状态 |
 |---|------|------|
 | 1 | `astro build` dist 为空（旧 dev server 锁 dist 目录） | ✅ 已解决（杀 node + 清缓存） |
-| 2 | dev 模式 base=`/` vs build 模式 base=`/blog` | ✅ 已修复（process.argv 判断） |
+| 2 | dev 模式 base=`/` vs build 模式 base=`/blog` | ✅ 已修复 → 切换 CF 后统一用 `/` |
 | 3 | posts collection 为空时的 warning | ✅ 正常（16 篇文章已填充） |
 | 4 | games101-projects.md 中 Typora 本地图片路径 | ✅ 已替换为 CDN URL |
 | 5 | shader-practice.md 中 URL 编码的 Hexo 相对路径 | ✅ 已替换为 CDN URL |
 | 6 | node_modules/.astro/data-store.json 缓存旧路径 | ✅ 已清除 |
-| 7 | GitHub Pages 未启用 | ⏳ 需手动在 Settings → Pages 设为 GitHub Actions |
+| 7 | 部署方案从 GitHub Pages 切换到 Cloudflare Pages | ✅ 已完成 |

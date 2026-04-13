@@ -1,15 +1,16 @@
 # chu's Blog · AI 交接文档
 
 > **最后更新**：2026-04-13
-> **当前状态**：Phase 4 完成（15 篇文章已迁移），Phase 5 构建部署进行中
-> **分支**：`astro`
+> **当前状态**：Phase 5 进行中（Cloudflare Pages 部署，待确认 CF 项目分支配置）
+> **分支**：`redesign-astro`
 > **仓库**：https://github.com/chu123122/blog.git
+> **线上地址**：https://blog-b9l.pages.dev
 
 ---
 
 ## 📋 30 秒速读
 
-博客从 Hexo 迁移到 Astro 6。视觉风格「花と嵐」已确定并落地——暖白底色、飘落花瓣、日系文学感。15 篇旧文章已迁移为 MD。GitHub Actions 部署配置已写好。当前卡在构建阶段（dist 被旧进程锁住），需要杀掉 node 后重新 build + push。
+博客从 Hexo 迁移到 Astro 6。视觉风格「花と嵐」已确定并落地——暖白底色、飘落花瓣、日系文学感。16 篇文章已迁移为 MD。构建已通过（20 页，2.32s）。部署方案为 **Cloudflare Pages**（自动监听 GitHub push）。GitHub Actions 仅做 CI 构建检查。当前需确认 Cloudflare Pages 项目绑定的分支为 `redesign-astro`。
 
 ---
 
@@ -17,15 +18,15 @@
 
 | 决策 | 内容 | 原因 |
 |------|------|------|
-| 技术栈 | Astro 6 + MDX + GitHub Pages | 静态博客最佳方案，用户已确认 |
+| 技术栈 | Astro 6 + MDX + Cloudflare Pages | 静态博客最佳方案，用户已确认 |
 | 视觉风格 | 花と嵐（A+A2 融合） | 经过 10+ 套 demo 对比后确认 |
 | 底色 | `#faf8f5` 暖白 | 用户明确不要纯黑 |
 | 字体 | Shippori Mincho / Noto Serif SC / Zen Old Mincho / Noto Sans SC | 日系文学感 |
 | 花瓣 | 12 片，不透明度 18%~35%，自然可见 | 用户喜欢 A 方案的花瓣程度 |
 | 分类色条 | 图形=赤 `#c47b6b` / 技术=蓝 `#7b9bb5` / 游戏=绿 `#8baa7d` | A2 方案确认 |
 | 隐藏细节 | 竖排日文、hero 小字、footer 彩蛋，hover 渐显 | 用户核心审美："克制但不寡淡，细节暗藏在缝隙里" |
-| base 路径 | dev 时 `/`，build 时 `/blog` | 自动切换，astro.config.mjs 中 process.argv 判断 |
-| 部署 | GitHub Actions → gh-pages | deploy.yml 已写好 |
+| base 路径 | 统一 `/`（无子路径） | Cloudflare Pages 部署在根路径 |
+| 部署 | Cloudflare Pages（自动），GitHub Actions 仅 CI | 用户原有 CF 项目 `blog` |
 
 ---
 
@@ -69,20 +70,24 @@ blog/
 - [x] Phase 1：Astro 项目初始化 + 配置
 - [x] Phase 2：视觉风格确认（10+ 套 demo → 花と嵐）
 - [x] Phase 3：CSS + Layout + 5 个页面组件
-- [x] Phase 4：15 篇旧文章 HTML→MD 迁移
+- [x] Phase 4：16 篇旧文章 HTML→MD 迁移
+- [x] astro build 通过（20 页，2.32s）
+- [x] 修复 2 处断裂图片路径
+- [x] astro.config.mjs 切换到 Cloudflare Pages
+- [x] GitHub Actions 简化为 CI-only
 
 ## 🚀 下一步（从这里开始）
 
-### 立即执行
+### 确认 Cloudflare Pages 配置
 
-1. 杀掉所有 node 进程：`Get-Process node | Stop-Process -Force`
-2. 清理缓存：`Remove-Item dist,.astro -Recurse -Force`
-3. 构建：`npx astro build`（需要 Node 22.12.0）
-4. 验证 dist 目录有 HTML 输出
-5. 创建 `astro` 分支：`git checkout -b astro`
-6. 推送：`git add -A && git commit -m "feat: astro blog with hanato-arashi theme" && git push -u origin astro`
-7. 在 GitHub 仓库设置中：Settings → Pages → Source 改为 GitHub Actions
-8. 验证 https://chu123122.github.io/blog
+1. 登录 Cloudflare Dashboard → Pages → `blog` 项目
+2. 确认 **Production branch** 设为 `redesign-astro`（或等合并到 `main`）
+3. 确认 **Build settings**：
+   - Framework preset: `Astro`
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+4. 如果配置正确，push 已触发，等待部署完成
+5. 验证 https://blog-b9l.pages.dev
 
 ---
 
@@ -118,7 +123,7 @@ blog/
 1. [x] Astro 项目可正常 build，生成静态 HTML
 2. [x] 花と嵐视觉风格完整渲染（花瓣/暖白/衬线体/竖排装饰/隐藏细节）
 3. [x] 15 篇旧文章成功迁移为 MD 并可通过 Content Collection 读取
-4. [ ] GitHub Pages 部署成功，https://chu123122.github.io/blog 可访问
+4. [ ] Cloudflare Pages 部署成功，https://blog-b9l.pages.dev 可访问
 5. [ ] 响应式在移动端正常工作
 
 ---
