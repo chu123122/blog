@@ -1,7 +1,7 @@
 # chu's Blog · AI 交接文档
 
-> **最后更新**：2026-04-13
-> **当前状态**：Phase 5 进行中（Cloudflare Pages 部署，待确认 CF 项目分支配置）
+> **最后更新**：2026-04-14
+> **当前状态**：Phase 5 进行中（CF Pages 部署待确认）+ 页脚音乐播放器已上线
 > **分支**：`redesign-astro`
 > **仓库**：https://github.com/chu123122/blog.git
 > **线上地址**：https://blog-b9l.pages.dev
@@ -75,6 +75,7 @@ blog/
 - [x] 修复 2 处断裂图片路径
 - [x] astro.config.mjs 切换到 Cloudflare Pages
 - [x] GitHub Actions 简化为 CI-only
+- [x] **页脚隐藏式音乐播放器**（Option C，内嵌 BaseLayout.astro + global.css）
 
 ## 🚀 下一步（从这里开始）
 
@@ -96,6 +97,17 @@ blog/
 1. **dist 锁定问题**：如果 `astro build` 后 dist 为空，是因为旧 dev server 进程锁住了目录。杀掉所有 node 进程后重试。
 2. **base 路径**：dev 模式下访问 `localhost:4321/`（无 /blog 前缀）；build/preview 访问 `localhost:4321/blog/`。astro.config.mjs 已自动处理。
 3. **字体加载**：使用 `fonts.googleapis.cn`（国内镜像），海外访问可能需要改为 `fonts.googleapis.com`。
+4. **Node 版本**：Astro 6 要求 Node ≥22.12。开发机如果有旧版本会构建失败。
+
+### 音乐播放器技术债（2026-04-14 复盘发现）
+
+| # | 问题 | 严重度 | 说明 |
+|:-:|------|:------:|------|
+| TD-1 | `<script>` 使用 TS 类型注解但没加 `lang="ts"` | 低 | 依赖 Vite 隐式 TS 处理，建议显式标注 |
+| TD-2 | 歌单为空时的处理不够明确 | 低 | 用 `style.display="none"` 隐藏，但 `.gitkeep` 占位仍存在容易误解 |
+| TD-3 | 无播放状态持久化 | 中 | 刷新页面后播放进度和状态丢失，需要 localStorage |
+| TD-4 | 无音量控制 | 低 | 只能依赖系统音量，缺少 UI 滑块 |
+| TD-5 | 外链音频 CORS 风险 | 低 | 测试用了 soundhelix.com，未验证 CORS 头 |
 
 ---
 
